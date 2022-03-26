@@ -1,0 +1,40 @@
+Commands:
+  all                    别名：建构建项目。
+  app                    仅构建应用程序。
+  app-flash              仅刷新应用程序。
+  bootloader             仅构建引导加载程序。
+  bootloader-flash       仅限闪存引导加载程序。
+  build-system-targets   打印构建系统目标列表。
+  clean                  从构建目录中删除构建输出文件
+  confserver             运行 JSON 配置服务器。
+  create-component       创建一个新组件。
+  create-project         创建一个新项目。
+  efuse_common_table     为 IDF 的 eFuse 字段生成 C 源代码。
+  efuse_custom_table     为用户的 eFuse 字段生成 C 源代码。
+  encrypted-app-flash    仅刷新加密的应用程序。
+  encrypted-flash        闪存加密的项目。
+  erase_flash            擦除整个闪存芯片。
+  erase_otadata          擦除 otadata 分区。
+  flash                  闪现项目。
+  fullclean              删除整个构建目录内容。
+  gdb                    运行 GDB。
+  gdbgui                 默认浏览器中的 GDB UI。
+  gdbtui                 GDB TUI 模式。
+  menuconfig             运行“menuconfig”项目配置工具。
+  monitor                显示串行输出。
+  openocd                从当前路径运行 openocd
+  partition_table        仅构建分区表。
+  partition_table-flash  仅限闪存分区表。
+  post_debug             用于读取异步调试操作的输出并停止它们的实用程序目标。
+  python-clean           用于读取异步输出的实用程序目标从IDF目录调试操作中删除生成的Python字节码并停止它们。
+  read_otadata           读取 otadata 分区。
+  reconfigure            重新运行 CMake。
+  set-target             设置要构建的芯片目标。
+  show_efuse_table       打印 eFuse 表。
+  size                   打印有关应用程序的基本尺寸信息。
+  size-components        打印每个组件的尺寸信息。
+  size-files             打印每个源文件的大小信息。
+  uf2                    生成包含所有二进制文件的 UF2 二进制文件
+  uf2-app                为应用程序生成 UF2 二进制文件只要
+  
+  
