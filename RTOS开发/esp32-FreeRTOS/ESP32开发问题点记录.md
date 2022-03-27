@@ -162,3 +162,44 @@ idf_component_register(SRCS "./src/main.c"
                         EMBED_TXTFILES test_aerogarden_com.pem)
 ```
 
+## 5、esp32中断回调函数的修饰问题
+
+```C
+/*********************************************************************
+ @fn        uartIntrCallBack
+
+ @brief     uart interrupt call back function 
+
+ @param	   event: event type
+ 		   user_data: user data
+ **********************************************************************/
+static void IRAM_ATTR uartIntrCallBack(void *param)
+{
+	ESP_LOGI(TAG,"触发串口中断");
+	switch(event.type) 
+	{
+		case UART_DATA:
+            ESP_LOGI(TAG, "[UART DATA]: %d", event.size);
+			stUart1Com.unRcvlen = event.size;
+			stUart1Com.bRcv = true;
+			break;
+		case UART_DATA_BREAK:
+			ESP_LOGI(TAG, "Ready to write data to uart");
+			stUart1Com.bSnd = true;
+			break;
+		default:
+			ESP_LOGI(TAG, "uart evet default case,break");
+			break;
+	}
+}
+
+	ESP_ERROR_CHECK(uart_isr_register(ECHO_UART_PORT_NUM, uartIntrCallBack, NULL,  ESP_INTR_FLAG_LOWMED | ESP_INTR_FLAG_IRAM, &handle )); //回调函数
+
+```
+
+需要用`IRAM_ATTR`来修饰回调函数，否则在程序运行过程中会报参数错误问题如下所示
+
+```
+ESP_ERR_INVALID_ARG (0x102): Invalid argument
+```
+
