@@ -54,7 +54,7 @@ void app_main()
 ### 定时器创建
 
 ```C
-TimerHandle_t xTimerCreate(	const char * const pcTimerName,
+TimerHandle_t xTimerCreate(const char * const pcTimerName,
                            const TickType_t xTimerPeriodInTicks,
                            const UBaseType_t uxAutoReload,
                            void * const pvTimerID,
