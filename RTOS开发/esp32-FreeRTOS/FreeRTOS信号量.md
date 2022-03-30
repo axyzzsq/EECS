@@ -12,6 +12,8 @@ FreeRTOS中信号量的实现，也是通过消息队列做到的
 
 下面的程序创建了一个二值信号量，例如我们去操作某些硬件，读取I2C之类的，某一时刻，应该是只允许一个任务去操作，无论是读还是写，所以需要用这个信号量去控制一下，并且操作完之后，要及时让出CPU，使得其他任务能够得到信号量。
 
+### demo
+
 ```C
 SemaphoreHandle_t xSemaphore = NULL;
 
@@ -62,7 +64,107 @@ void app_main(void)
 
 ```
 
-## 多值信号量创建
+### 创建二值信号
+
+```C
+SemaphoreHandle_t xSemaphoreCreateBinary( void )
+```
+
+![image-20220330191728570](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220330191728570.png)
+
+### 二值信号减一
+
+```C
+portBASE_TYPE xSemaphoreTake( xSemaphoreHandle xSemaphore, portTickType xTicksToWait );
+```
+
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220330191811190.png)
+
+下面函数专门用于中断下的信号量获取
+
+```C
+portBASE_TYPE xSemaphoreGiveFromISR( xSemaphoreHandle xSemaphore, portBASE_TYPE *pxHigherPriorityTaskWoken );
+```
+
+![image-20220330191902844](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220330191902844.png)
+
+### 二值信号加一
+
+```C
+void xSemaphoreGive( SemaphoreHandle_t xSemaphore )
+```
+
+![image-20220330191944608](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220330191944608.png)
+
+## 多值信号量
+
+在中断不频繁的系统中，使用二值信号量没有问题，但是中断频繁发生时，则会有中断丢失的问题。因为中断发生时延迟任务执行，延迟任务执行的过程中，如果又来了两次中断，则只会处理第一次，第二次将会丢失。为此引入多值信号量来处理这个问题。
+
+### demo
+
+```C
+SemaphoreHandle_t xSemaphore = NULL;
+
+// A task that uses the semaphore.
+void WriteSomethingTask1( void * pvParameters )
+{
+	int countme=0;
+	for(;;)
+	{
+		printf("write1 %d\n",countme++);
+		xSemaphoreGive(xSemaphore);
+		vTaskDelay(1000 / portTICK_PERIOD_MS); 
+		taskYIELD(); 
+	}
+}
+// A task that uses the semaphore.
+void WriteSomethingTask2( void * pvParameters )
+{
+	int countme=0;
+	for(;;)
+	{
+		printf("write2 %d\n",countme++);
+		xSemaphoreGive(xSemaphore);
+		vTaskDelay(1000 / portTICK_PERIOD_MS); 
+		taskYIELD(); 
+	}
+}
+
+// A task that uses the semaphore.
+void ReadSomethingTask( void * pvParameters )
+{
+	int countme=0;
+	for(;;)
+	{
+		if(xSemaphoreTake(xSemaphore,( TickType_t ) 0 ) == pdTRUE )
+		{
+			printf("read %d\n",countme++);
+		}
+		else
+		{
+		}
+		vTaskDelay(10 / portTICK_PERIOD_MS); 
+		taskYIELD(); 
+	}
+}
+
+
+void app_main(void) 
+{ 
+
+    xSemaphore = xSemaphoreCreateCounting( 10, 0 );
+	
+	if( xSemaphore != NULL )
+	{
+		xTaskCreate(WriteSomethingTask1, "write1", 1000, NULL, 1, NULL ); 
+		xTaskCreate(WriteSomethingTask2, "write2", 1000, NULL, 1, NULL ); 
+		xTaskCreate(ReadSomethingTask, "read", 1000, NULL, 1, NULL ); 
+	}
+}
+
+```
+
+### 多值信号量的创建
 
 ```
 SemaphoreHandle_t xSemaphoreCreateCounting(UBaseType_t uxMaxCount, UBaseType_t uxInitialCount )
@@ -127,7 +229,7 @@ void app_main(void)
 
 ```
 
-## 互斥信号量创建
+### 互斥信号量创建
 
 ```C
 SemaphoreHandle_t xSemaphoreCreateMutex( void )
