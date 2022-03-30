@@ -55,10 +55,10 @@ void app_main()
 
 ```C
 TimerHandle_t xTimerCreate(	const char * const pcTimerName,	
-								const TickType_t xTimerPeriodInTicks,
-								const UBaseType_t uxAutoReload,
-								void * const pvTimerID,
-								TimerCallbackFunction_t pxCallbackFunction )
+                  const TickType_t xTimerPeriodInTicks,
+				  const UBaseType_t uxAutoReload,
+				  void * const pvTimerID,
+				  TimerCallbackFunction_t pxCallbackFunction )
 
 ```
 
@@ -91,9 +91,7 @@ BaseType_t xTimerDelete( TimerHandle_t xTimer, TickType_t xTicksToWait )
 ### 定时器周期修改
 
 ```C
-BaseType_t xTimerChangePeriod( 	TimerHandle_t xTimer,
-								TickType_t xNewPeriod,
-								TickType_t xTicksToWait )
+BaseType_t xTimerChangePeriod( 	TimerHandle_t xTimer, TickType_t xNewPeriod, TickType_t xTicksToWait )
 
 ```
 
