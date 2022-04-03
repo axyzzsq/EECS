@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-DSDKCONFIG=/home/siqing/esp/Event_loops/sdkconfig;-DIDF_PATH=/home/siqing/esp/esp-idf;-DIDF_TARGET=esp32;-DPYTHON_DEPS_CHECKED=1;-DPYTHON=/home/siqing/.espressif/python_env/idf4.3_py3.8_env/bin/python;-DEXTRA_COMPONENT_DIRS=/home/siqing/esp/esp-idf/components/bootloader;-DLEGACY_INCLUDE_COMMON_HEADERS=;-GUnix Makefiles;<SOURCE_DIR><SOURCE_SUBDIR>'
