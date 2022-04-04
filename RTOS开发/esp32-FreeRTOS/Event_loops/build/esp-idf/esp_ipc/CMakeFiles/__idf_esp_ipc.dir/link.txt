@@ -1,2 +1,0 @@
-/home/siqing/.espressif/tools/xtensa-esp32-elf/esp-2021r2-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc libesp_ipc.a  CMakeFiles/__idf_esp_ipc.dir/ipc.c.obj
-/home/siqing/.espressif/tools/xtensa-esp32-elf/esp-2021r2-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib libesp_ipc.a

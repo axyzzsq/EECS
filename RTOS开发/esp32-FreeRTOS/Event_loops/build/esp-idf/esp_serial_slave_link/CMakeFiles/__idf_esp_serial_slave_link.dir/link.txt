@@ -1,2 +1,0 @@
-/home/siqing/.espressif/tools/xtensa-esp32-elf/esp-2021r2-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc libesp_serial_slave_link.a  CMakeFiles/__idf_esp_serial_slave_link.dir/essl.c.obj CMakeFiles/__idf_esp_serial_slave_link.dir/essl_sdio.c.obj CMakeFiles/__idf_esp_serial_slave_link.dir/essl_spi.c.obj
-/home/siqing/.espressif/tools/xtensa-esp32-elf/esp-2021r2-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib libesp_serial_slave_link.a
