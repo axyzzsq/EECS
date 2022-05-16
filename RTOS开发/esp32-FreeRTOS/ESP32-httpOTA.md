@@ -35,3 +35,8 @@ ESP32 SPI Flash 内有与升级相关的（至少）四个分区：
 
 
 
+
+
+[OTA方式教程–1](https://blog.csdn.net/Marchtwentytwo/article/details/117790043?)
+
+[OTA方式教程–2](https://blog.csdn.net/Marchtwentytwo/article/details/119353289?)
