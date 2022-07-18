@@ -18,6 +18,8 @@
 
 Event 就是一种事件的发生标记，对于 WiFi，成功连接到接入点就是一个事件。对于每一个Event 都有两部分识别符，分别是 Event base 和 Event ID，Event base声明了这个事件属于哪个 事件族 而 Event ID 表明了是事件族的哪个事件。就是像一个人的姓和名一样，姓就是 Event base，名就是 Event ID。
 
+
+
 那么怎么创建一个 **Event** ？
 
 如何定义**Event base**？
