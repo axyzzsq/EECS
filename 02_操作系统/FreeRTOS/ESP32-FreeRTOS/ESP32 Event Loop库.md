@@ -10,6 +10,8 @@
 
  ![img](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/f6f6d9faa7654315a52970df55304f60.png)
 
+程序路径：[ESP32_eventloop](https://github.com/axyzzsq/Code_For_EECS/tree/main/02_%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/FreeRTOS/ESP32-FreeRTOS/Event_loops)
+
 ## Event Loop库
 
  Event_Loop 包含两个，一个是用户可以自定义的Event_Loop ，还有一个是Event_Loop_default，是供系统设置好的事件的使用的，Event_Loop 库本质上是为了实现当某些事情发生时（比如wifi完成了链接、定时器中断到了时间），系统可以自动调用回调函数来处理针对当前事件。
