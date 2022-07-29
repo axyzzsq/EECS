@@ -1,9 +1,9 @@
 # EECS
 嵌入式开发笔记
 
- ```markdown
+ ```shell
  .
- ├── [00_程序设计](https://github.com/axyzzsq/EECS/tree/main/00_%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1)
+ ├── 00_程序设计
  │   ├── C++程序设计
  │   └── C语言程序设计
  ├── 01_项目问题
