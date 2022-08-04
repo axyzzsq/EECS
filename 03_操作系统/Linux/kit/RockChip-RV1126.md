@@ -1,8 +1,6 @@
 
 
- ![Rockchip Announces RKi6000 WiFi SoC for ULP IoT](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/logo01_678x452.png)
-
-# RockChip-RV1126
+# 瑞芯微-RV1126芯片开发指令
 
 ## 1、SDK编译环境配置
 
