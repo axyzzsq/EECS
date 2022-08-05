@@ -132,7 +132,11 @@ make savedefconfig
 
 ## 二、应用
 
-### 1、设置板端ip
+### 1、串口设置
+
+波特率设置为 1500000
+
+### 2、设置板端ip
 
 ```shell
 ifconfig   eth0  设置网段
