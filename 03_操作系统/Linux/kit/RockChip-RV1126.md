@@ -130,19 +130,41 @@ make savedefconfig
 
 
 
-## 二、应用
+
+
+## 二、烧录和分区
+
+
+
+
+
+## 三、应用
 
 ### 1、串口设置
 
 波特率设置为 1500000
 
-### 2、设置板端ip
+
+
+### 2、设置板端
+
+方式1: 临时设置：
 
 ```shell
-ifconfig   eth0  设置网段
+ifconfig eth0 设置网段
 ```
 
+方式2: 自动分配——编辑/etc/init.d/rcS,添加：
 
+```shell
+udhcpc -i eth0
+```
+
+### 3、NFS挂载
+
+```shell
+mount -t nfs -o nolock,vers=3 192.168.123.39:/home/book/nfs_rootfs /mnt
+```
 
 
 
