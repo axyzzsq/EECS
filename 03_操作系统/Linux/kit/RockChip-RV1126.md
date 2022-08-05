@@ -2,7 +2,9 @@
 
 # 瑞芯微-RV1126芯片开发指令
 
-## 1、SDK编译环境配置
+## 一、编译
+
+### 1、SDK编译环境配置
 
 ```shell
 #Step1:
@@ -23,6 +25,9 @@ source envsetup.sh
 ./build.sh lunch
 
 #Step7: 这时会出现很多选项， 输入“2” 来选择BoardConfig-38x38-spinand.mk
+
+
+
 ```
 
 Note:
@@ -30,7 +35,7 @@ Note:
 - Step1~Step3，只需要安装一次即可；
 - Step4~Step4，每在一个新终端上编译都需要执行一次。  
 
-## 2、总体编译
+### 2、总体编译
 
 在工程根目录下执行命令
 
@@ -38,9 +43,9 @@ Note:
 ./build.sh
 ```
 
-## 3、分步编译
+### 3、分步编译
 
-### (1) U-boot 编译
+#### (1) U-boot 编译
 
 ① U-oot配置说明
 
@@ -66,7 +71,7 @@ cp defconfig configs/rv1126_defconfig
 ./build.sh uboot
 ```
 
-### (2) Kernel 编译
+#### (2) Kernel 编译
 
 ① Kernel 配置说明  
 
@@ -89,7 +94,7 @@ cp defconfig arch/arm/configs/rv1126_defconfig
 /build.sh kernel
 ```
 
-### (3) Rootfs 编译
+#### (3) Rootfs 编译
 
 ① 首先在SDK根目录查看Board Config对应的rootfs是哪个配置
 
@@ -121,6 +126,16 @@ make savedefconfig
 
 ```shell
 ./build.sh  rootfs
+```
+
+
+
+## 二、应用
+
+### 1、设置板端ip
+
+```shell
+ifconfig   eth0  设置网段
 ```
 
 
