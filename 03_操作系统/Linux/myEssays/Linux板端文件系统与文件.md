@@ -33,7 +33,7 @@ SigmaStar SSD222板端/init.d的文件如下图所示：
 
  ![image-20220806143554054](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220806143554054.png)
 
-**共同项只有一个：rcS脚本**
+**共同项只有一个：rcS脚本,所以这个是文件在系统中是一个必要文件，不可裁剪**
 
 - rcS文件
 
