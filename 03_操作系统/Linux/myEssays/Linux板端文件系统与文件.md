@@ -23,7 +23,7 @@
 
 ![image-20220806153501308](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220806153501308.png)
 
-### （1）/etc/init.d
+### （1）/etc/init.d目录
 
 RockChip RV1126板端/init.d中的文件如下图
 
@@ -66,7 +66,7 @@ SigmaStar SSD222板端/init.d的文件如下图所示：
 
 
 
-### （2）/etc/profile
+### （2）/etc/profile文件
 
 SigmStar SSD222板端 /etc/profile文件：
 
@@ -145,7 +145,7 @@ done
 
 
 
-### （3）/etc/inittab
+### （3）/etc/inittab文件
 
 定义：
 
