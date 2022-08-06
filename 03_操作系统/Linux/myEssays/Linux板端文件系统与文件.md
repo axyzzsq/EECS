@@ -1,7 +1,5 @@
 # Linux板端文件系统与文件
 
-[TOC]
-
 通过RockChip RV1126与SigmaStar SSD222板端文件系统的交叉项归纳嵌入式Linux的常用文件。
 
 - 按照以下几个方面展开对文件系统的复习:
