@@ -1,5 +1,7 @@
 # Linux板端文件系统与文件
 
+[TOC]
+
 通过RockChip RV1126与SigmaStar SSD222板端文件系统的交叉项归纳嵌入式Linux的常用文件。
 
 - 按照以下几个方面展开对文件系统的复习:
@@ -143,11 +145,77 @@ done
 	> - /etc/profile文件设置的变量对所有用户都生效，/etc/profile.d可以设置针对不同用户的特定环境变量，profile文件调用profile.d文件，会对环境变量重新定义，实现环境变量的私人定制；
 	> - /etc/profile.d对系统来说解耦强度高，封装性好，不需要的时候直接把某个profile.d文件删除，不会影响系统的运行；
 
-### （3） /etc/fstab
+
+
+### （3）/etc/inittab
+
+定义：
+
+当您使用 `init` 或 `shutdown` 命令引导系统或更改运行级别时，`init` 守护进程会通过从 `/etc/inittab` 文件中读取信息来启动进程。此文件为 `init` 进程定义以下重要的项：
+
+- `init` 进程将重新启动的项
+
+- 在终止时要启动、监视和重新启动的进程
+
+- 在系统进入新运行级别时执行的操作
+
+	​																																				——以上的定义来自[甲骨文公司文档](https://docs.oracle.com/cd/E24847_01/html/819-6950/hbrunlevels-12863.html#scrolltoc)
 
 
 
 
+
+RochChip RV1126板端 /etc/inittab:
+
+```shell
+# /etc/inittab
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+::sysinit:/bin/mount -t proc proc /proc
+::sysinit:/bin/mount -o remount,rw /
+::sysinit:/bin/mkdir -p /dev/pts
+::sysinit:/bin/mkdir -p /dev/shm
+::sysinit:/bin/mount -a 2>/dev/null
+::sysinit:/bin/hostname -F /etc/hostname
+# now run any rc scripts
+::respawn:-/bin/sh
+::sysinit:/etc/init.d/rcS
+
+# Put a getty on the serial port
+#ttyFIQ0::respawn:/sbin/getty -L  ttyFIQ0 0 vt100 # GENERIC_SERIAL
+
+# Stuff to do for the 3-finger salute
+#::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+::shutdown:/etc/init.d/rcK
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+```
+
+SigmaStar SSD222板端 /etc/inittab:
+
+```shell
+::sysinit:/etc/init.d/rcS
+::respawn:-/bin/sh
+```
+
+- 在两段代码中，都缺省了唯一标识符id、runlevels运行等级；
+
+- 第三个参数
 
 
 
