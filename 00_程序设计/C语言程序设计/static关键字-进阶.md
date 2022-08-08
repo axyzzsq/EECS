@@ -1,6 +1,6 @@
 # static关键字
 
-例程1:
+static_example.c:
 
 ```C
 #include<stdio.h>
