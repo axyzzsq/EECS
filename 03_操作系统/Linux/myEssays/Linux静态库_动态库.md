@@ -147,7 +147,7 @@ a.out: test.c
 
 makefile写好后，运行 `make build` 将会构建 libmylib.a， 运行 `make test` 将会生成链接 libmylib.a 的程序。
 
-
+ ![image-20220811115018812](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220811115018812.png)
 
 ### (3)EVB案例-SF1
 
