@@ -64,20 +64,23 @@
 > - 以信驰达科技的ND04(C）NRF52832/10模组为例：
 >
 > ```C
-> void main(void){
+> void main(void)
+> {
 >  	//等待BLE模块启动成功，信驰达模组ND04X,从机上电串口打印DEVICE_START
 >  	while(!memcmp(rx_ble_mode_data(),"DEVICE_START\r\n",strlen("DEVICE_START\r\n")));
 >  	//使能RTS，即MCU可接收BLE模块发送的数据
 >     set_rts_enable();
-> while(1){
-> 	//获取CTS状态是否改变为低电平
-> 	if(get_cts_state()==0){
-> 	//发送测试数据到BLE模块
-> 		mcu_send_to_ble_string("Testdata.\r\n");
-> 	}
-> 	//处理MCU获取到的数据
-> 	mcu_data_process(mcu_uart_read_data());
-> }
+>     while(1)
+>     {
+>         //获取CTS状态是否改变为低电平
+>         if(get_cts_state()==0)
+>         {
+>             //发送测试数据到BLE模块
+>             mcu_send_to_ble_string("Testdata.\r\n");
+>         }
+>         //处理MCU获取到的数据
+>         mcu_data_process(mcu_uart_read_data());
+>     }
 > }
 > ```
 
