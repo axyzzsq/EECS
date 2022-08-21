@@ -9,7 +9,7 @@
 
 ### 1.1 硬件连线
 
-![](pic/01_hardware_block.jpg)
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/01_hardware_block.jpg)
 引脚含义如下：
 
 | 引脚     | 含义                                                         |
@@ -25,7 +25,7 @@
 
 这个图等我们看完后面的SPI协议，再回过头来讲解：
 
-![image-20220216121534549](pic/04_spi_block.png)
+![image-20220216121534549](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/04_spi_block.png)
 
 
 
@@ -34,7 +34,7 @@
 ### 2.1 传输示例
 
 假设现在主控芯片要传输一个0x56数据给SPI Flash，时序如下：
-<img src="pic/02_spi_send_byte.png">
+<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/02_spi_send_byte.png">
 首先CS0先拉低选中SPI Flash，0x56的二进制就是0b0101 0110，因此在每个SCK时钟周期，DO输出对应的电平。
 SPI Flash会在每个时钟周期的上升沿读取D0上的电平。
 
@@ -52,8 +52,8 @@ CPHA:表示相位，即第一个还是第二个时钟沿采样数据，0为第�
 |  0   |  1   |  1   | SPICLK初始电平为低电平，在第二个时钟沿采样数据 |
 |  1   |  0   |  2   | SPICLK初始电平为高电平，在第一个时钟沿采样数据 |
 |  1   |  1   |  3   | SPICLK初始电平为高电平，在第二个时钟沿采样数据 |
-我们常用的是模式0和模式3，因为它们都是在上升沿采样数据，不用去在乎时钟的初始电平是什么，只要在上升沿采集数据就行。
+|我们常用的是模式0和模式3，因为它们都是在上升沿采样数据，不用去在乎时钟的初始电平是什么，只要在上升沿采集数据就行。||||
 
 极性选什么？格式选什么？通常去参考外接的模块的芯片手册。比如对于OLED，查看它的芯片手册时序部分：
-<img src="pic/03_spi_protocol.png">
+<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/03_spi_protocol.png">
 SCLK的初始电平我们并不需要关心，只要保证在上升沿采样数据就行。
