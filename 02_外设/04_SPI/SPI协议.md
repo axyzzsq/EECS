@@ -1,10 +1,5 @@
 # SPI协议介绍 #
 
-参考资料：
-
-* 《SPI Block Guide V04.01.pdf》
-* 《S3C2440A_UserManual_Rev13.pdf》
-
 ## 1. SPI硬件知识
 
 ### 1.1 硬件连线
@@ -19,7 +14,7 @@
 | SCK      | Serial Clock，时钟                                           |
 | CS       | Chip Select，芯片选择引脚                                    |
 
-
+- 片选引脚在同一个时刻，只能一个有效。
 
 ### 1.2 SPI控制器内部结构
 
