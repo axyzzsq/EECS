@@ -71,8 +71,6 @@ ar crv libmylib.a my_print.o my_math.o
 注意：我们要生成的库的文件名必须形如 `libxxx.a` ，这样我们在链接这个库时，就可以用 `-lxxx`。
 反过来讲，当我们告诉编译器 `-lxxx`时，编译器就会在指定的目录中搜索 `libxxx.a` 或是 `libxxx.so`。
 
-
-
 #### ③生成对应的头文件
 
 头文件定义了 libmylib.a 的接口，也就是告诉用户怎么使用 libmylib.a。
@@ -113,11 +111,11 @@ int main(int argc, char *argv[])
 gcc test.c -L. -lmylib
 ```
 
-将会生成a.out，通过 ./a.out 可以运行该程序。说明我们的静态库能正常工作。
+将会生成a.out，通过 ./a.out 可以运行该程序。说明我们的静态库能正常工作。如果没有使用-o指定生成的可执行文件名称，则默认生成a.out。
 
 上面的命令中 `-L.` 告诉 gcc 搜索链接库时包含当前路径， `-lmylib` 告诉 gcc 生成可执行程序时要链接 `libmylib.a`。
 
-> - 假设在当前文件夹底下建立了myLib文件夹用来存放静态库，把`libmylib.a`移动到myLib里，则编译的时候需要改动库文件所在位置`gcc test.c -LmyLib -lmylib`
+> - 假设在当前文件夹底下建立了myLib文件夹用来存放静态库，把 `libmylib.a`移动到myLib里，则编译的时候需要改动库文件所在位置 `gcc test.c -LmyLib -lmylib`
 
 执行效果如下：
 
@@ -150,8 +148,6 @@ makefile写好后，运行 `make build` 将会构建 libmylib.a， 运行 `make 
  ![image-20220811115018812](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220811115018812.png)
 
 ### (3)EVB案例-SF1
-
-
 
 ## 2.动态库
 
@@ -214,7 +210,7 @@ int max(int n1, int n2, int n3);
 
 #### ③ 测试，连结动态库生成可执行文件
 
-建立一个使用`max`函数的test.c，代码如下：
+建立一个使用 `max`函数的test.c，代码如下：
 
 ```cpp
 #include <stdio.h>
@@ -228,7 +224,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-`gcc test.c -L. -lmax` 生成a.out，其中`-lmax`表示要链接`libmax.so`。.
+`gcc test.c -L. -lmax` 生成a.out，其中 `-lmax`表示要链接 `libmax.so`。.
 
 - 没有指定生成的可执行文件的名称时，默认生成a.out可执行文件。
 
@@ -252,7 +248,7 @@ int main(int argc, char *argv[])
 如果我们把 `libmax.so` 所在的路径添加到 `/etc/ld.so.conf` 中，再以root权限运行 `ldconfig` 程序，更新 `/etc/ld.so.cache` ，`a.out`运行时，就可以找到 `libmax.so`。
 
 但作为一个简单的测试例子，让我们改动系统的东西，似乎不太合适。
-还有另一种简单的方法，就是为`a.out`指定 `LD_LIBRARY_PATH`。
+还有另一种简单的方法，就是为 `a.out`指定 `LD_LIBRARY_PATH`。
 
 ```ini
 LD_LIBRARY_PATH=. ./a.out
@@ -287,17 +283,6 @@ clean:
 	rm -f *.o *.so a.out
 ```
 
-`make build`就会生成`libmax.so`， `make test`就会生成`a.out`并执行，`make clean`会清理编译和测试结果。
-
-
-
-
+`make build`就会生成 `libmax.so`， `make test`就会生成 `a.out`并执行，`make clean`会清理编译和测试结果。
 
 ### (3)EVB案例
-
-
-
-
-
-
-
