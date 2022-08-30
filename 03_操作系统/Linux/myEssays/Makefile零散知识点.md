@@ -1,6 +1,6 @@
 # Makefile 知识点
 
-## 1、make  -c M
+## 1、make  -C M
 
 当make的目标为all时，
 
