@@ -201,10 +201,18 @@ void Key1Moudle(unsigned char *pstat)
 	/*根据当前状态判断执行哪一个状态处理函数*/
 	switch(*stat)
 	{
-		case KEY_STAT_CHECK_DOWN : Key1StatCheckDown(pstat); break;
-		case KEY_STAT_DOWN_HANDLE : Key1StatDownHandle(pstat); break;
-		case KEY_STAT_CHECK_UP : Key1StatCheckUp(pstat); break;
-		case KEY_STAT_UP_HANDLE : Key1StatUpHandle(pstat); break;
+		case KEY_STAT_CHECK_DOWN : 
+            Key1StatCheckDown(pstat); 
+            break;
+		case KEY_STAT_DOWN_HANDLE : 
+            Key1StatDownHandle(pstat); 
+            break;
+		case KEY_STAT_CHECK_UP : 
+            Key1StatCheckUp(pstat); 
+            break;
+		case KEY_STAT_UP_HANDLE : 
+            Key1StatUpHandle(pstat); 
+            break;
 		/*当没有此状态,默认设置为检测按键是否按下状态*/
 		default :
 			*pstat = KEY_STAT_CHECK_DOWN;
@@ -218,10 +226,18 @@ void Key2Moudle(unsigned char *pstat)
 	/*根据当前状态判断执行哪一个状态处理函数*/
 	switch(*stat)
 	{
-		case KEY_STAT_CHECK_DOWN : Key2StatCheckDown(pstat); break;
-		case KEY_STAT_DOWN_HANDLE : Key2StatDownHandle(pstat); break;
-		case KEY_STAT_CHECK_UP : Key2StatCheckUp(pstat); break;
-		case KEY_STAT_UP_HANDLE : Key2StatUpHandle(pstat); break;
+		case KEY_STAT_CHECK_DOWN : 
+            Key2StatCheckDown(pstat); 
+            break;
+		case KEY_STAT_DOWN_HANDLE : 
+            Key2StatDownHandle(pstat); 
+            break;
+		case KEY_STAT_CHECK_UP : 
+            Key2StatCheckUp(pstat); 
+            break;
+		case KEY_STAT_UP_HANDLE : 
+            Key2StatUpHandle(pstat); 
+            break;
 		/*当没有此状态,默认设置为检测按键是否按下状态*/
 		default :
 			*pstat = KEY_STAT_CHECK_DOWN;
@@ -371,14 +387,22 @@ void AdcMoudle(AdcStrcutTypeDef *pAdcStruct)
 	/*根据当前状态判断执行哪一个状态处理函数*/
 	switch(pAdcStrcut->stat)
 	{
-		case ADC_STAT_CHECK_TIME : AdcStatCheckTime(pAdcStruct);
-		case ADC_STAT_START : AdcStatStart(pAdcStruct);
-		case ADC_STAT_CHECK_COMPLETE : AdcStatCheckComplete(pAdcStruct);
-		case ADC_STAT_CHECK_READ_DATA : AdcStatCheckReadData(pAdcStruct);
+		case ADC_STAT_CHECK_TIME : 
+            AdcStatCheckTime(pAdcStruct);
+            break;
+		case ADC_STAT_START : 
+            AdcStatStart(pAdcStruct);
+            break;
+		case ADC_STAT_CHECK_COMPLETE : 
+            AdcStatCheckComplete(pAdcStruct);
+            break;
+		case ADC_STAT_CHECK_READ_DATA : 
+            AdcStatCheckReadData(pAdcStruct);
+            break;
 		/*默认情况下设置状态为 ADC 检查是否到采集时间*/
 		default :
-		pAdcStruct->stat = ADC_STAT_CHECK_TIME;
-		break;
+            pAdcStruct->stat = ADC_STAT_CHECK_TIME;
+			break;
 	}
 } 
  
