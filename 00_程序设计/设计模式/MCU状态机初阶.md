@@ -201,11 +201,11 @@ void Key1Moudle(unsigned char *pstat)
 	/*根据当前状态判断执行哪一个状态处理函数*/
 	switch(*stat)
 	{
-		case KEY_STAT_CHECK_DOWN : 
+        case KEY_STAT_CHECK_DOWN : 
             Key1StatCheckDown(pstat); 
             break;
 		case KEY_STAT_DOWN_HANDLE : 
-            Key1StatDownHandle(pstat); 
+            Key1StatDownHandle(pstat);
             break;
 		case KEY_STAT_CHECK_UP : 
             Key1StatCheckUp(pstat); 
