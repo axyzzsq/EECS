@@ -436,7 +436,7 @@ void AdcStatCheckComplete(AdcStrcutTypeDef *pAdcStruct)
     {
         /*没有采集完成直接返回*/
         return;
-	} 
+    } 
     /*设置状态为 检查 ADC 是否采集完成*/
     pAdcStruct->stat = ADC_STAT_CHECK_READ_DATA;
 }
