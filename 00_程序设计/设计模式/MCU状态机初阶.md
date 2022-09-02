@@ -381,7 +381,7 @@ void TimerInterruptMs(void)
 	pAdcStruct->CountMs++;
 }
  
-void AdcMoudle(AdcStrcutTypeDef *pAdcStruct)
+void AdcModule(AdcStrcutTypeDef *pAdcStruct)
 {
 	/*根据当前状态判断执行哪一个状态处理函数*/
 	switch(pAdcStrcut->stat)
