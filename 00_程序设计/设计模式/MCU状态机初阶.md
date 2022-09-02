@@ -377,15 +377,15 @@ int main()
  /*定时器 1ms 中断函数*/
 void TimerInterruptMs(void)
 {
-	/*在定时器中， 改变 ADC 的计数变量*/
-	pAdcStruct->CountMs++;
+    /*在定时器中， 改变 ADC 的计数变量*/
+    pAdcStruct->CountMs++;
 }
  
 void AdcModule(AdcStrcutTypeDef *pAdcStruct)
 {
-	/*根据当前状态判断执行哪一个状态处理函数*/
-	switch(pAdcStrcut->stat)
-	{
+    /*根据当前状态判断执行哪一个状态处理函数*/
+    switch(pAdcStrcut->stat)
+    {
         case ADC_STAT_CHECK_TIME :
             AdcStatCheckTime(pAdcStruct);
             break;
@@ -398,25 +398,25 @@ void AdcModule(AdcStrcutTypeDef *pAdcStruct)
         case ADC_STAT_CHECK_READ_DATA :
             AdcStatCheckReadData(pAdcStruct);
             break;
-		/*默认情况下设置状态为 ADC 检查是否到采集时间*/
+            /*默认情况下设置状态为 ADC 检查是否到采集时间*/
         default :
             pAdcStruct->stat = ADC_STAT_CHECK_TIME;
             break;
-	}
+    }
 } 
  
 void AdcStatCheckTime(AdcStrcutTypeDef *pAdcStruct)
 {
-	if(pAdcStruct->CountMs < ADC_ACQUISITION_PERIOD_MS)
-	{ 
-		/*采集周期没有到达直接返回*/
-		return;
-	}
-	/*清零计时器*/
-	pAdcStruct->CountMs = 0;
-	/*设置状态为 启动 ADC 采集*/
-	pAdcStruct->stat = ADC_STAT_START;
-	return;
+    if(pAdcStruct->CountMs < ADC_ACQUISITION_PERIOD_MS)
+    { 
+        /*采集周期没有到达直接返回*/
+        return;
+    }
+    /*清零计时器*/
+    pAdcStruct->CountMs = 0;
+    /*设置状态为 启动 ADC 采集*/
+    pAdcStruct->stat = ADC_STAT_START;
+    return;
 }
  
 void AdcStatStart(AdcStrcutTypeDef *pAdcStruct)
