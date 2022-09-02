@@ -431,22 +431,22 @@ void AdcStatStart(AdcStrcutTypeDef *pAdcStruct)
  
 void AdcStatCheckComplete(AdcStrcutTypeDef *pAdcStruct)
 { 
-	/*读取 ADC 状态,判断是否采集完成*/
-	if(AdcReadCompleteStat() == 0x00)
-	{
+    /*读取 ADC 状态,判断是否采集完成*/
+    if(AdcReadCompleteStat() == 0x00)
+    {
         /*没有采集完成直接返回*/
         return;
 	} 
-	/*设置状态为 检查 ADC 是否采集完成*/
-	pAdcStruct->stat = ADC_STAT_CHECK_READ_DATA;
+    /*设置状态为 检查 ADC 是否采集完成*/
+    pAdcStruct->stat = ADC_STAT_CHECK_READ_DATA;
 }
  
 void AdcStatCheckReadData(AdcStrcutTypeDef *pAdcStruct)
 {
-	/*读取 ADC 采集的数据到变量*/
-	pAdcStruct->AdcData = AdcReadData();
-	/*设置状态为 检查是否到达 ADC 采集时间*/
-	pAdcStruct->stat = ADC_STAT_CHECK_TIME;
+    /*读取 ADC 采集的数据到变量*/
+    pAdcStruct->AdcData = AdcReadData();
+    /*设置状态为 检查是否到达 ADC 采集时间*/
+    pAdcStruct->stat = ADC_STAT_CHECK_TIME;
 }
 
 ```
