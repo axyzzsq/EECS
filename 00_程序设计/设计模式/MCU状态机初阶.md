@@ -353,9 +353,9 @@ void Key2StatUpHandle(unsigned char *pstat)
  
 typedef struct
 {
-	unsigned short CountMs; /*ADC 采集周期计时*/
-	unsigned short AdcData; /*ADC 采集的数据*/
-	unsigned char stat; /*ADC 模块状态变量*/
+    unsigned short CountMs; /*ADC 采集周期计时*/
+    unsigned short AdcData; /*ADC 采集的数据*/
+    unsigned char stat; /*ADC 模块状态变量*/
 }AdcStructTypeDef;
  
 AdcStrcutTypeDef AdcStruct;
@@ -412,7 +412,6 @@ void AdcStatCheckTime(AdcStrcutTypeDef *pAdcStruct)
 		/*采集周期没有到达直接返回*/
 		return;
 	}
-	
 	/*清零计时器*/
 	pAdcStruct->CountMs = 0;
 	/*设置状态为 启动 ADC 采集*/
