@@ -363,15 +363,15 @@ AdcStrcutTypeDef AdcStruct;
 /*将第 3 章的 main 函数增加 1 条 ADC 模块*/
 int main()
 {
-	while(1)
-	{
-		/*按键 1 模块处理*/
-		Key1Moudle(&Key1Stat);
-		/*按键 2 模块处理*/
-		Key2Moudle(&Key1Stat);
-		/*ADC 模块采集*/
-		AdcModule(&AdcStruct);
-	}
+    while(1)
+    {
+        /*按键 1 模块处理*/
+        Key1Moudle(&Key1Stat);
+        /*按键 2 模块处理*/
+        Key2Moudle(&Key1Stat);
+        /*ADC 模块采集*/
+        AdcModule(&AdcStruct);
+    }
 }
  
  /*定时器 1ms 中断函数*/
