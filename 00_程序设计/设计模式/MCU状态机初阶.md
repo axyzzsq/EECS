@@ -295,7 +295,7 @@ void Key2StatCheckDown(unsigned char *pstat)
 	return;
 } 
  
-void Key1StatDownHandle(unsigned char *pstat)
+void Key2StatDownHandle(unsigned char *pstat)
 {
 	/*KEY2 按下状态处理*/
 	UartSend("KEY2 DOWN");
@@ -315,7 +315,7 @@ void Key2StatCheckUp(unsigned char *pstat)
 	return;
 } 
  
-void Key1StatUpHandle(unsigned char *pstat)
+void Key2StatUpHandle(unsigned char *pstat)
 {
 	/*KEY2 按下状态处理*/
 	UartSend("KEY2 UP");
