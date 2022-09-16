@@ -74,3 +74,9 @@
   > 查询 RTOFF，直至 RTOFF 位变为’1’ 以确认写操作已经完成。仅当 CNF 标志位被清除时，写操作才能进行，这个过程至少需要 3 个 RTCCLK 周期。
 
   
+
+## 三、S3C2410的实时时钟RTC
+
+ ![image-20210325115735625](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/202209152133546.png)
+
+ ![img](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/202209152134438.png)
