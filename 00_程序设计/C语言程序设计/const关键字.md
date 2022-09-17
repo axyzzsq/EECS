@@ -1,5 +1,7 @@
 # const关键字
 
+[C语言中const关键字的用法](https://blog.csdn.net/xingjiarong/article/details/47282255?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166333657816782412562614%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=166333657816782412562614&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-47282255-null-null.142^v47^body_digest,201^v3^add_ask&utm_term=C%E8%AF%AD%E8%A8%80%20const%E5%85%B3%E9%94%AE%E5%AD%97&spm=1018.2226.3001.4187)
+
 关键字const用来定义常量，如果一个变量被const修饰，那么它的值就不能再被改变，我想一定有人有这样的疑问，C语言中不是有#define吗，干嘛还要用const呢，我想事物的存在一定有它自己的道理，所以说const的存在一定有它的合理性，与预编译指令相比，const修饰符有以下的优点：
 
 1、预编译指令只是对值进行简单的替换，不能进行类型检查
