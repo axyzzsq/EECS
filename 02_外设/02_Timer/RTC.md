@@ -2,7 +2,7 @@
 
 ## 一、RTC实时时钟使用说明
 
-"RTC"是Real Time Clock 的简称，意为实时时钟。[stm32](https://www.zhihu.com/search?q=stm32&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A"157535721"})提供了一个秒中断源和一个闹钟中断源，修改计数器的值可以重新设置系统当前的时间和日期。
+"RTC"是Real Time Clock 的简称，意为实时时钟。stm32提供了一个秒中断源和一个闹钟中断源，修改计数器的值可以重新设置系统当前的时间和日期。
 　　RTC模块之所以具有实时时钟功能，是因为它内部维持了一个独立的定时器，通过配置，可以让它准确地每秒钟中断一次。但实际上，RTC就只是一个定时器而已，掉电之后所有信息都会丢失，因此我们需要找一个地方来存储这些信息，于是就找到了备份寄存器。其在掉电后仍然可以通过纽扣电池供电，所以能时刻保存这些数据。
  **配置RTC前须知：**
 
