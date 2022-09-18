@@ -2,8 +2,6 @@
 
 例程
 
-
-
 ```C
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -89,10 +87,9 @@ int main(int argc, char **argv)
 - 程序测试
 
   ```shell
-  cp copy_mmap.c 1.txt
   gcc -o copy_mmap copy_mmap.c
-  ./copy_mmap 1.txt 2.txt
-  cat 2.txt #可以看到程序被复制到到2.txt中
+  ./copy_mmap  copy_mmap.c new2.c
+  cat new2.c #可以看到程序被复制到到new2.c中
   ```
 
   
