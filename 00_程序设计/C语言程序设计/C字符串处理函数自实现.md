@@ -4,35 +4,35 @@
 
 ## 一、str...系列
 
-### 0、strlen()
+### 1、strlen()
 
 
 
-### 1、strstr()
+### 2、strstr()
 
 
 
-### 2、strcpy()
+### 3、strcpy()
 
 
 
-### 3、strncpy()
+### 4、strncpy()
 
 
 
-### 4、strcmp()
+### 5、strcmp()
 
 
 
-### 5、sprintf()
+### 6、sprintf()
 
 
 
-### 6、atoi()
+### 7、atoi()
 
 
 
-### 7、itoa()
+### 8、itoa()
 
 
 
