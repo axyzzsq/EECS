@@ -56,7 +56,7 @@
     - [第12讲-Ubuntu文件权限管理.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第12讲-Ubuntu文件权限管理.md)
     - [第13讲-Linux链接文件.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第13讲-Linux链接文件.md)
     - [第14讲-vim编辑器.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第14讲-vim编辑器.md)
-    - [第15讲-Linux C编程.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第15讲-Linux C编程.md)
+    - [第15讲-LinuxC编程.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第15讲-LinuxC编程.md)
     - [第16讲-make工具和Makefile引入.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第16讲-make工具和Makefile引入.md)
     - [第17讲-Makefile基本语法.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第17讲-Makefile基本语法.md)
     - [第18讲-shell脚本入门.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/正点原子第Ⅰ期/第18讲-shell脚本入门.md)
