@@ -1,7 +1,7 @@
 # 操作系统
 
-- ☆[Android](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Android)
-- ☆[FreeRTOS](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/FreeRTOS)
+- [★Android](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Android)
+- [★FreeRTOS](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/FreeRTOS)
   - [ESP32-FreeRTOS](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/FreeRTOS/ESP32-FreeRTOS)
     - [ESP32-OTA升级.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/FreeRTOS/ESP32-FreeRTOS/ESP32-OTA升级.md)
     - [ESP32-httpOTA.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/FreeRTOS/ESP32-FreeRTOS/ESP32-httpOTA.md)
@@ -21,7 +21,7 @@
     - [idf.py命令说明.txt](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/FreeRTOS/ESP32-FreeRTOS/idf.py命令说明.txt)
   - [MT7682-FreeRTOS](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/FreeRTOS/MT7682-FreeRTOS)
     - [librws-websocket-ssl.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/FreeRTOS/MT7682-FreeRTOS/librws-websocket-ssl.md)
-- ☆[Linux](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux)
+- [★Linux](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux)
   - [EVB](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux/EVB)
     - [NXP-iMx6ull.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/EVB/NXP-iMx6ull.md)
     - [RockChip-RV1126.md](https://github.com/axyzzsq/EECS/blob/main/03_操作系统/Linux/EVB/RockChip-RV1126.md)
@@ -64,6 +64,6 @@
   - [韦东山](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux/韦东山)
     - [应用基础](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux/韦东山/应用基础)
     - [驱动基础](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux/韦东山/驱动基础)
-- ☆[Linux命令行与shell脚本](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux命令行与shell脚本)
-- ☆[RT-Thread](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/RT-Thread)
-- ☆[时间片机制](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/时间片机制)
+- [★Linux命令行与shell脚本](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/Linux命令行与shell脚本)
+- [★RT-Thread](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/RT-Thread)
+- [★时间片机制](https://github.com/axyzzsq/EECS/tree/main/03_操作系统/时间片机制)
