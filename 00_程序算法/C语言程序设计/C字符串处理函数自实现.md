@@ -1,12 +1,15 @@
 # 字符串函数
 
-[toc]
+
 
 ## 一、str...系列
 
 ### 1、strlen()
 
-
+- 调用
+  - 作用
+  - 例程
+- mystrlen.c
 
 ### 2、strstr()
 
@@ -22,17 +25,21 @@
 
 ### 5、strcmp()
 
+### 6、strcat()
 
-
-### 6、sprintf()
-
-
-
-### 7、atoi()
+### 7、strncat()
 
 
 
-### 8、itoa()
+### 8、sprintf()
+
+
+
+### 9、atoi()
+
+
+
+### 10、itoa()
 
 
 
