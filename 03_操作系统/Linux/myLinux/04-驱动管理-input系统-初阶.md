@@ -24,7 +24,8 @@
   	struct input_id id;
   
   	unsigned long propbit[BITS_TO_LONGS(INPUT_PROP_CNT)];
-  
+      
+  	//支持的事件类型，对应的位会被置1，使用的方法类似于STM32的寄存器的使用，把对应的开关打开或者关闭
   	unsigned long evbit[BITS_TO_LONGS(EV_CNT)];
   	unsigned long keybit[BITS_TO_LONGS(KEY_CNT)];
   	unsigned long relbit[BITS_TO_LONGS(REL_CNT)];
@@ -34,7 +35,7 @@
   	unsigned long sndbit[BITS_TO_LONGS(SND_CNT)];
   	unsigned long ffbit[BITS_TO_LONGS(FF_CNT)];
   	unsigned long swbit[BITS_TO_LONGS(SW_CNT)];
-  	。。。。//省略一堆元素
+  	。。。。//省略一堆结构体成员
   };
   ```
 
@@ -104,6 +105,121 @@
 
   - B：Bitmaps
 
+    位图中事件的定义在`/Linux-4.9.88/include/uapi/linux/input-event-codes.h`
+
      ![image-20220924202906240](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924202906240.png)
 
-- 
+## 二、不使用库的应用编程
+
+### 1、获取设备信息
+
+例程：
+
+```C
+
+#include <linux/input.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
+
+
+/* ./01_get_input_info /dev/input/event0 */
+int main(int argc, char **argv)
+{
+        int fd;
+        int err;
+        int len;
+        int i;
+        unsigned char byte;
+        int bit;
+        struct input_id id;
+        unsigned int evbit[2];
+        char *ev_names[] = {
+                "EV_SYN ",
+                "EV_KEY ",
+                "EV_REL ",
+                "EV_ABS ",
+                "EV_MSC ",
+                "EV_SW  ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "NULL ",
+                "EV_LED ",
+                "EV_SND ",
+                "NULL ",
+                "EV_REP ",
+                "EV_FF  ",
+                "EV_PWR ",
+                };
+
+        if (argc != 2)
+        {
+                printf("Usage: %s <dev>\n", argv[0]);
+                return -1;
+        }
+
+        fd = open(argv[1], O_RDWR);
+        if (fd < 0)
+        {
+                printf("open %s err\n", argv[1]);
+                return -1;
+        }
+
+        err = ioctl(fd, EVIOCGID, &id);  //通过ioctl函数获取input device的input_id
+        if (err == 0)
+        {
+                printf("bustype = 0x%x\n", id.bustype );
+                printf("vendor  = 0x%x\n", id.vendor  );
+                printf("product = 0x%x\n", id.product );
+                printf("version = 0x%x\n", id.version );
+        }
+
+        len = ioctl(fd, EVIOCGBIT(0, sizeof(evbit)), &evbit);   //获取evbit,但是这里的evbit为什么要加个&呢
+        if (len > 0 && len <= sizeof(evbit)) //获取字节数
+        {
+                printf("support ev type: ");
+                for (i = 0; i < len; i++) //获取bit位
+                {
+                        byte = ((unsigned char *)evbit)[i];
+                        for (bit = 0; bit < 8; bit++)
+                        {
+                                if (byte & (1<<bit)) {
+                                        printf("%s ", ev_names[i*8 + bit]);
+                                }
+                        }
+                }
+                printf("\n");
+        }
+
+        return 0;
+}
+
+
+```
+
+说明：
+
+- `input.h`不是内核程序中的`input.h`，而是工具链中的`input.h`
+
+  - 为什么是这样？这是什么机制？
+
+- 韦东山`ioctl`函数的编程逻辑：
+
+  参考`/drivers/input/evdev.c`文件中的`evdev_do_ioctl()`函数；
+
+  **需要分析`evdev_do_ioctl()`函数**.
+
+编译执行：
+
+ ![image-20220924225825997](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924225825997.png)
+
