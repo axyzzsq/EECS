@@ -223,4 +223,4 @@ int main(int argc, char **argv)
 
  ![image-20220924225825997](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924225825997.png)
 
-同步时间：会通知已经同步完数据了。
+同步事件：会通知已经同步完数据了。
