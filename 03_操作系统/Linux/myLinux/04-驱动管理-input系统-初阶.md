@@ -350,5 +350,7 @@ int main(int argc, char **argv)
 
 编译执行：
 
-![img](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924232356142.png)
+![image-20220924233424542](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924233424542.png)
+
+![image-20220924233327734](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220924233327734.png)
 
