@@ -632,10 +632,6 @@ int main(int argc, char **argv)
 
 ```
 
-说明：
-
-
-
 编译执行：
 
  ![image-20220925161929544](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220925161929544.png)
