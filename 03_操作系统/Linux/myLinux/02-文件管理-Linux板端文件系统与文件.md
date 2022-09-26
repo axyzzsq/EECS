@@ -150,16 +150,20 @@ done
 /etc/inittab文件的作用是设定Linux的运行等级，Linux常见运行级别如下
 
 - 0：关机模式
+
 - 1：单用户模式
+
 - 2：无网络支持的多用户模式
+
 - 3：字符界面多用户模式
+
 - 4：保留，未使用模式
+
 - 5：图像界面多用户模式
+
 - 6：重新引导系统，重启模式
 
-
-
-
+  
 
 RochChip RV1126板端 /etc/inittab:
 
@@ -213,7 +217,17 @@ SigmaStar SSD222板端 /etc/inittab:
 
 - 第三个参数
 
-
-
 ## 2、/proc目录
 
+Linux 内核提供了一种通过 /proc 文件系统，在运行时访问内核内部数据结构、改变内核设置的机制。proc文件系统是一个伪文件系统，它只存在内存当中，而不占用外存空间。它以文件系统的方式为访问系统内核数据的操作提供接口。
+
+```shell
+/proc/bus  #系统总线(Bus)信息，例如pci/usb/input等
+/proc/driver  #驱动信息
+/proc/irq  #中断请求设备信息
+/proc/net   #网卡设备信息
+```
+
+eg：查看iMx6ull开发板端,input系统事件对应的硬件信息：
+
+ ![image-20220926095729971](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220926095729971.png)
