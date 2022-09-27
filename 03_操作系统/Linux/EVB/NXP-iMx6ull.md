@@ -111,6 +111,12 @@ cp arch/arm/boot/zImage ~/nfs_rootfs
 cp arch/arm/boot/dts/100ask_imx6ull-14x14.dtb  ~/nfs_rootfs  #不要错把.dts拷过去，没用
 ```
 
+- 编译内核成功：
+
+![image-20220927152557872](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220927152557872.png)
+
+
+
 ### 3.2 编译安装内核模块
 
 #### 3.2.1 编译内核模块
@@ -135,7 +141,7 @@ cp  /mnt/zImage  /boot
 cp  /mnt/*.dtb   /boot
 cp  /mnt/lib/modules  /lib  -rfd
 sync  #同步文件
-reboot #重启后log查看文件编译时间
+reboot #重启之后开发板就是使用新的Image/dtb/模块,重启后log查看文件编译时间
 ```
 
 ## 4. 单独编译更新uboot
