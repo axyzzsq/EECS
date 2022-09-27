@@ -45,11 +45,3 @@
   ../repo/repo sync -c
   ```
 
-## 2、配置交叉编译工具链
-
-```shell
-export ARCH=arm
-export CROSS_COMPILE=arm-buildroot-linux-gnueabihf-
-export PATH=$PATH:/home/book/100ask_imx6ull-sdk/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin
-```
-
