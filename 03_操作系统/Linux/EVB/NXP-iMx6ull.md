@@ -167,7 +167,7 @@ reboot
 
 系统重启后查看log，可以看到u-boot是刚刚编译完成的
 
-![image-20220703183831397](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220703183831397.png)
+![image-20220928074543746](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20220928074543746.png)
 
 ## 5. 更新驱动
 
