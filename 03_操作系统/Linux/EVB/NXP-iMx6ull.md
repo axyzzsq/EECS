@@ -56,6 +56,7 @@ arm-buildroot-linux-gnueabihf-gcc -v
 
 ```shell
 cd Linux-4.9.88
+make mrproper
 make 100ask_imx6ull_defconfig
 make zImage  -j4
 make dtbs
