@@ -883,12 +883,163 @@ LIBRARY_PATH=/home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x8
 COLLECT_GCC_OPTIONS='-E' '-v' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=hard' '-mfpu=vfpv3-d16' '-mthumb' '-mtls-dialect=gnu'
 ```
 
+从上面的结果中筛选出来和Toolchain有关存放头文件库文件的目录路径：
+
+```shell
+# 头文件
+/home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/bin/../arm-linux-gnueabihf/libc/usr/include
+# 库文件
+/home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/bin/../arm-linux-gnueabihf/libc/usr/lib/
+```
+
+
+
 ### step4:把头文件库文件放到工具链目录下
 
 ```shell
 cp include/*  /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include/
 cp -d lib/*so* /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/lib/
+# -d的作用：如果它原来是链接文件，经过拷贝之后，在新目录下仍旧是链接文件。
 ```
 
 ### step5:测试tslib
+
+```shell
+mv /etc/init.d/S05lvgl  /etc/init.d/S99myirhmi2  /root
+cp /mnt/tmp/lib/*so* -d /lib
+cp /mnt/tmp/bin/* /bin
+cp /mnt/tmp/etc/ts.conf -d /etc
+export TSLIB_FBDEVICE=/dev/fb0
+export TSLIB_PLUGINDIR=/usr/lib/ts
+export TSLIB_TSDEVICE=/dev/input/event1
+export TISLIB_TSEVENTTYPE=INPUT
+ts_test_mt
+```
+
+![image-20221001193409808](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221001193409808.png)
+
+## 六、tslib测试程序
+
+实现一个程序，不断打印 2 个触点的距离。
+思路：假设是 5 点触摸屏，调用一次 ts_read_mt 可以得到 5 个新数据；使
+用新旧数据进行判断，如果有 2 个触点，就打印出距离。  
+
+```shell
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <getopt.h>
+
+#include <linux/input.h>
+
+#include <sys/ioctl.h>
+
+#include <tslib.h>
+
+int distance(struct ts_sample_mt *point1, struct ts_sample_mt *point2)
+{
+        int x = point1->x - point2->x;
+        int y = point1->y - point2->y;
+
+        return x*x + y*y;
+}
+
+int main(int argc, char **argv)
+{
+        struct tsdev *ts;
+        int i;
+        int ret;
+        struct ts_sample_mt **samp_mt;
+        struct ts_sample_mt **pre_samp_mt;
+        int max_slots;
+        int point_pressed[20];
+        struct input_absinfo slot;
+        int touch_cnt = 0;
+
+        ts = ts_setup(NULL, 0);
+        if (!ts)
+        {
+                printf("ts_setup err\n");
+                return -1;
+        }
+
+        if (ioctl(ts_fd(ts), EVIOCGABS(ABS_MT_SLOT), &slot) < 0) {
+                perror("ioctl EVIOGABS");
+                ts_close(ts);
+                return errno;
+        }
+
+        max_slots = slot.maximum + 1 - slot.minimum;
+
+        samp_mt = malloc(sizeof(struct ts_sample_mt *));
+        if (!samp_mt) {
+                ts_close(ts);
+                return -ENOMEM;
+        }
+        samp_mt[0] = calloc(max_slots, sizeof(struct ts_sample_mt));
+        if (!samp_mt[0]) {
+                free(samp_mt);
+                ts_close(ts);
+                return -ENOMEM;
+        }
+
+        pre_samp_mt = malloc(sizeof(struct ts_sample_mt *));
+        if (!pre_samp_mt) {
+                ts_close(ts);
+                return -ENOMEM;
+        }
+        pre_samp_mt[0] = calloc(max_slots, sizeof(struct ts_sample_mt));
+        if (!pre_samp_mt[0]) {
+                free(pre_samp_mt);
+                ts_close(ts);
+                return -ENOMEM;
+        }
+
+
+        for ( i = 0; i < max_slots; i++)
+                pre_samp_mt[0][i].valid = 0;
+
+        while (1)
+        {
+                ret = ts_read_mt(ts, samp_mt, max_slots, 1);
+
+                if (ret < 0) {
+                        printf("ts_read_mt err\n");
+                        ts_close(ts);
+                        return -1;
+                }
+
+                for (i = 0; i < max_slots; i++)
+                {
+                        if (samp_mt[0][i].valid)
+                        {
+                                memcpy(&pre_samp_mt[0][i], &samp_mt[0][i], sizeof(struct ts_sample_mt));
+                        }
+                }
+
+                touch_cnt = 0;
+                for (i = 0; i < max_slots; i++)
+                {
+                        if (pre_samp_mt[0][i].valid && pre_samp_mt[0][i].tracking_id != -1)
+                                point_pressed[touch_cnt++] = i;
+                }
+
+                if (touch_cnt == 2)
+                {
+                        printf("distance: %08d\n", distance(&pre_samp_mt[0][point_pressed[0]], &pre_samp_mt[0][point_pressed[1]]));
+                }
+        }
+
+        return 0;
+}
+
+
+```
 
