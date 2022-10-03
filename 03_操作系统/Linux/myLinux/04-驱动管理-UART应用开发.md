@@ -312,7 +312,256 @@ console有多个取值时，使用最后一个取值来判断
 
 ## 第四讲 串口应用编程-回环
 
+参考资料
 
+* [Serial Programming Guide for POSIX Operating Systems](https://digilander.libero.it/robang/rubrica/serial.htm)
+* [Linux串口编程](https://www.cnblogs.com/feisky/archive/2010/05/21/1740893.html)：有参考代码
+* [Linux串口—struct termios结构体](https://blog.csdn.net/yemingzhu163/article/details/5897156)
+  * 这个是转载，排版更好看: https://www.cnblogs.com/sky-heaven/p/9675253.html
+
+### 1. 串口API
+
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/10_tty_drivers.png)
+
+在Linux系统中，操作设备的统一接口就是：open/ioctl/read/write。
+
+对于UART，又在ioctl之上封装了很多函数，主要是用来设置行规程。
+
+所以对于UART，编程的套路就是：
+
+* open
+* 设置行规程，比如波特率、数据位、停止位、检验位、RAW模式、一有数据就返回
+* read/write
+
+
+
+怎么设置行规程？行规程的参数用结构体termios来表示，可以参考[Linux串口—struct termios结构体](https://blog.csdn.net/yemingzhu163/article/details/5897156)
+
+![image-20210716152256884](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/12_termios.png)
+
+这些函数在名称上有一些惯例：
+
+* tc：terminal contorl
+* cf: control flag
+
+下面列出一些函数：
+
+| 函数名      | 作用                                      |
+| ----------- | ----------------------------------------- |
+| tcgetattr   | get terminal attributes，获得终端的属性   |
+| tcsetattr   | set terminal attributes，修改终端参数     |
+| tcflush     | 清空终端未完成的输入/输出请求及数据       |
+| cfsetispeed | sets the input baud rate，设置输入波特率  |
+| cfsetospeed | sets the output baud rate，设置输出波特率 |
+| cfsetspeed  | 同时设置输入、输出波特率                  |
+
+函数不多，主要是需要设置好termios中的参数，这些参数很复杂，可以参考[Linux串口—struct termios结构体](https://blog.csdn.net/yemingzhu163/article/details/5897156)。
+
+![image-20221003213353610](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221003213353610.png)
+
+
+
+### 2. 串口收发实验
+
+本实验用过把串口的发送、接收引脚短接，实现自发自收：使用write函数发出字符，使用read函数读取字符。
+
+serial_send_recv.c
+
+```C
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <termios.h>
+#include <stdlib.h>
+
+/* set_opt(fd,115200,8,'N',1) */
+int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
+{
+	struct termios newtio,oldtio;
+	
+	if ( tcgetattr( fd,&oldtio) != 0) { 
+		perror("SetupSerial 1");
+		return -1;
+	}
+	
+	bzero( &newtio, sizeof( newtio ) );
+	newtio.c_cflag |= CLOCAL | CREAD; 
+	newtio.c_cflag &= ~CSIZE; 
+
+	newtio.c_lflag  &= ~(ICANON | ECHO | ECHOE | ISIG);  /*Input*/
+	newtio.c_oflag  &= ~OPOST;   /*Output*/
+
+	switch( nBits )
+	{
+	case 7:
+		newtio.c_cflag |= CS7;
+	break;
+	case 8:
+		newtio.c_cflag |= CS8;
+	break;
+	}
+
+	switch( nEvent )
+	{
+	case 'O':
+		newtio.c_cflag |= PARENB;
+		newtio.c_cflag |= PARODD;
+		newtio.c_iflag |= (INPCK | ISTRIP);
+	break;
+	case 'E': 
+		newtio.c_iflag |= (INPCK | ISTRIP);
+		newtio.c_cflag |= PARENB;
+		newtio.c_cflag &= ~PARODD;
+	break;
+	case 'N': 
+		newtio.c_cflag &= ~PARENB;
+	break;
+	}
+
+	switch( nSpeed )
+	{
+	case 2400:
+		cfsetispeed(&newtio, B2400);
+		cfsetospeed(&newtio, B2400);
+	break;
+	case 4800:
+		cfsetispeed(&newtio, B4800);
+		cfsetospeed(&newtio, B4800);
+	break;
+	case 9600:
+		cfsetispeed(&newtio, B9600);
+		cfsetospeed(&newtio, B9600);
+	break;
+	case 115200:
+		cfsetispeed(&newtio, B115200);
+		cfsetospeed(&newtio, B115200);
+	break;
+	default:
+		cfsetispeed(&newtio, B9600);
+		cfsetospeed(&newtio, B9600);
+	break;
+	}
+	
+	if( nStop == 1 )
+		newtio.c_cflag &= ~CSTOPB;
+	else if ( nStop == 2 )
+		newtio.c_cflag |= CSTOPB;
+	
+	newtio.c_cc[VMIN]  = 1;  /* 读数据时的最小字节数: 没读到这些数据我就不返回! */
+	newtio.c_cc[VTIME] = 0; /* 等待第1个数据的时间: 
+	                         * 比如VMIN设为10表示至少读到10个数据才返回,
+	                         * 但是没有数据总不能一直等吧? 可以设置VTIME(单位是10秒)
+	                         * 假设VTIME=1，表示: 
+	                         *    10秒内一个数据都没有的话就返回
+	                         *    如果10秒内至少读到了1个字节，那就继续等待，完全读到VMIN个数据再返回
+	                         */
+
+	tcflush(fd,TCIFLUSH);
+	
+	if((tcsetattr(fd,TCSANOW,&newtio))!=0)
+	{
+		perror("com set error");
+		return -1;
+	}
+	//printf("set done!\n");
+	return 0;
+}
+
+int open_port(char *com)
+{
+	int fd;
+	//fd = open(com, O_RDWR|O_NOCTTY|O_NDELAY);
+	fd = open(com, O_RDWR|O_NOCTTY);
+    if (-1 == fd){
+		return(-1);
+    }
+	
+	  if(fcntl(fd, F_SETFL, 0)<0) /* 设置串口为阻塞状态*/
+	  {
+			printf("fcntl failed!\n");
+			return -1;
+	  }
+  
+	  return fd;
+}
+
+
+/*
+ * ./serial_send_recv <dev>
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	int iRet;
+	char c;
+
+	/* 1. open */
+
+	/* 2. setup 
+	 * 115200,8N1
+	 * RAW mode
+	 * return data immediately
+	 */
+
+	/* 3. write and read */
+	
+	if (argc != 2)
+	{
+		printf("Usage: \n");
+		printf("%s </dev/ttySAC1 or other>\n", argv[0]);
+		return -1;
+	}
+
+	fd = open_port(argv[1]);
+	if (fd < 0)
+	{
+		printf("open %s err!\n", argv[1]);
+		return -1;
+	}
+
+	iRet = set_opt(fd, 115200, 8, 'N', 1);
+	if (iRet)
+	{
+		printf("set port err!\n");
+		return -1;
+	}
+
+	printf("Enter a char: ");
+	while (1)
+	{
+		scanf("%c", &c);
+		iRet = write(fd, &c, 1);
+		iRet = read(fd, &c, 1);
+		if (iRet == 1)
+			printf("get: %02x %c\n", c, c);
+		else
+			printf("can not get data\n");
+	}
+
+	return 0;
+}
+
+
+```
+
+- `newtio.c_cc[VMIN]  = 1`; 如果设置为0，`iRet = read(fd, &c, 1);`则马上进行读取，速度快于UART的传输速度，则会出现`printf("can not get data\n");`
+
+![image-20221003211938219](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221003211938219.png)
+
+```shell
+# 设置编译工具链
+export ARCH=arm
+export CROSS_COMPILE=arm-buildroot-linux-gnueabihf-
+export PATH=$PATH:/home/book/100ask_imx6ull-sdk/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin
+# 编译
+arm-buildroot-linux-gnueabihf-gcc -o serial_send_recv serial_send_recv.c
+```
+
+![image-20221003211604453](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221003211604453.png)
 
 ## 第五讲 串口应用编程-GPS
 
