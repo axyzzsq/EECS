@@ -1,4 +1,4 @@
-## UART应用编程
+# UART应用编程
 
 ## 第一讲 UART硬件
 
@@ -64,7 +64,7 @@ ARM芯片上得串口都是TTL电平的，通过板子上或者外接的电平�
 
 ARM芯片是如何发送/接收数据？
 如图所示串口结构图：
-![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_007.bmp)
+![str](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_007.bmp)
 要发送数据时，CPU控制内存要发送的数据通过FIFO传给UART单位，UART里面的移位器，依次将数据发送出去，在发送完成后产生中断提醒CPU传输完成。
 接收数据时，获取接收引脚的电平，逐位放进接收移位器，再放入FIFO，写入内存。在接收完成后产生中断提醒CPU传输完成。
 
@@ -335,7 +335,7 @@ console有多个取值时，使用最后一个取值来判断
 
 
 
-怎么设置行规程？行规程的参数用结构体termios来表示，可以参考[Linux串口—struct termios结构体](https://blog.csdn.net/yemingzhu163/article/details/5897156)
+怎么设置行规程？行规程的用结构体termios来表示，可以参考[Linux串口—struct termios结构体](https://blog.csdn.net/yemingzhu163/article/details/5897156)
 
 ![image-20210716152256884](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/12_termios.png)
 
@@ -552,6 +552,8 @@ int main(int argc, char **argv)
 
 ![image-20221003211938219](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221003211938219.png)
 
+- 勘误: read如果没有读到数据，返回的是0
+
 ```shell
 # 设置编译工具链
 export ARCH=arm
@@ -564,4 +566,325 @@ arm-buildroot-linux-gnueabihf-gcc -o serial_send_recv serial_send_recv.c
 ![image-20221003211604453](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221003211604453.png)
 
 ## 第五讲 串口应用编程-GPS
+
+### 1 GPS简介
+
+全球定位系统(Global Positioning System，GPS)是一种以空中卫星为基础的高精度无线电导航的定位系统，它在全球任何地方以及近地空间都能够提供准确的地理位置、车行速度及精确的时间信息。GPS主要由三大组成部分：空间部分、地面监控部分和用户设备部分。GPS系统具有高精度、全天候、用广泛等特点。
+
+太空卫星部分由多颗卫星组成，分成多个轨道，绕行地球一周约12小时。每个卫星均持续发射载有卫星轨道数据及时间的无线电波，提供地球上的各种接收机来应用。
+
+地面管制部分，这是为了追踪及控制太空卫星运行所设置的地面管制站，主要工作为负责修正与维护每个卫星能够正常运转的各项参数数据，以确保每个卫星都能够提供正确的讯息给使用者接收机来接收
+
+使用者接收机（即用户设备），追踪所有的GPS卫星，并实时的计算出接收机所在位置的坐标、移动速度及时间。我们日常接触到的是用户设备部分，这里使用到的GPS模块即为用户设备接收机部分。
+
+ 
+
+### 2 GPS模块硬件
+
+GPS模块与外部控制器的通讯接口有多种方式，这里我们使用串口进行通讯，波特率为9600bps,1bit停止位，无校验位，无流控，默认每秒输出一次标准格式数据。
+
+GPS模块外观如下图所示，通过排线与控制器进行供电和通讯。该模块为集成模块，没有相关原理图。
+
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/13_gps.png)
+
+### 3 GPS模块数据格式
+
+GPS使用多种标准数据格式，目前最通用的GNSS格式是NMEA0183格式。NMEA0183是最终定位格式，即将二进制定位格式转为统一标准定位格式，与卫星类型无关。这是一套定义接收机输出的标准信息，有几种不同的格式，每种都是独立相关的ASCII格式，逗点隔开数据流，数据流长度从30-100字符不等，通常以每秒间隔持续输出。
+
+NVMEA0183格式主要针对民用定位导航，与专业RTCM2.3/3.0和CMR+的GNSS数据格式不同。通过NMEA0183格式，可以实现GNSS接收机与PC或PDA之间的数据交换，可以通过USB和COM口等通用数据接口进行数据传输，其兼容性高，数据传输稳定。这里我们使用串口进行是通讯，通信框图如下图所示。
+
+ ![image-20210716154938718](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/14_gps_communication.png)
+
+我们使用串口接收数据，收到的数据包含：$GPGGA（GPS定位数据）、$GPGLL（地理定位信息）、$GPGSA（当前卫星信息）、$GPGSV（可见卫星状态信息）、$GPRMC（推荐最小定位信息）、$GPVTG（地面速度信息）。
+
+这里我们只分析$GPGGA (Global Positioning System Fix Data)即可，它包含了GPS定位经纬度、质量因子、HDOP、高程、参考站号等字段。其标准格式如下：
+
+$GPGGA，<1>，<2>，<3>，<4>，<5>，<6>，<7>，<8>，<9>，M，<10>，M，<11>，<12>*hh<CR><LF>　
+
+$XXGGA语句各字段的含义和取值范围各字段的含义和取值范围见下表所示，XX取值有：
+
+* GPGGA：单GPS
+* BDGGA：单北斗
+* GLGGA：单GLONASS 
+* GNGGA：多星联合定位 
+
+| 字段 | 含义                                         | 取值范围                                                     |
+| ---- | -------------------------------------------- | ------------------------------------------------------------ |
+| <1>  | UTC时间hhmmss.ss                             | 000000.00~235959.99                                          |
+| <2>  | 纬度，格式：ddmm.mmmm                        | 000.00000~8959.9999                                          |
+| <3>  | 南北半球                                     | N北纬  S南纬                                                 |
+| <4>  | 经度格式dddmm.mmmm                           | 00000.0000~17959.9999                                        |
+| <5>  | 东西半球                                     | E表示东经  W表示西经                                         |
+| <6>  | GPS状态                                      | 0=未定位  1=GPS单点定位固定解  2=差分定位  3=PPS解  4=RTK固定解  5=RTK浮点解  6=估计值  7=手工输入模式  8=模拟模式 |
+| <7>  | 应用解算位置的卫星数                         | 00~12                                                        |
+| <8>  | HDOP  水平图形强度因子                       | 0.500~99.000（大于6不可用)                                   |
+| <9>  | 海拔高度                                     | -9999.9~99999.9                                              |
+| <l0> | 地球椭球面相对大地水准面的高度  （高程异常） | -9999.9~99999.9                                              |
+| <11> | 差分时间                                     | 从最近一次接收到差分信号开始的秒数，如果不是差分定位将为空   |
+| <12> | 参考站号                                     | 0000~1023；不使用DGPS时为空                                  |
+
+ 
+
+例子：$GPGGA，074529.82，2429.6717，N，11804.6973，E，1，8，1.098，42.110，，，M，，*76。
+
+```C
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <termios.h>
+#include <stdlib.h>
+
+/* set_opt(fd,115200,8,'N',1) */
+int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
+{
+	struct termios newtio,oldtio;
+	
+	if ( tcgetattr( fd,&oldtio) != 0) { 
+		perror("SetupSerial 1");
+		return -1;
+	}
+	
+	bzero( &newtio, sizeof( newtio ) );
+	newtio.c_cflag |= CLOCAL | CREAD; 
+	newtio.c_cflag &= ~CSIZE; 
+
+	newtio.c_lflag  &= ~(ICANON | ECHO | ECHOE | ISIG);  /*Input*/
+	newtio.c_oflag  &= ~OPOST;   /*Output*/
+
+	switch( nBits )
+	{
+	case 7:
+		newtio.c_cflag |= CS7;
+	break;
+	case 8:
+		newtio.c_cflag |= CS8;
+	break;
+	}
+
+	switch( nEvent )
+	{
+	case 'O':
+		newtio.c_cflag |= PARENB;
+		newtio.c_cflag |= PARODD;
+		newtio.c_iflag |= (INPCK | ISTRIP);
+	break;
+	case 'E': 
+		newtio.c_iflag |= (INPCK | ISTRIP);
+		newtio.c_cflag |= PARENB;
+		newtio.c_cflag &= ~PARODD;
+	break;
+	case 'N': 
+		newtio.c_cflag &= ~PARENB;
+	break;
+	}
+
+	switch( nSpeed )
+	{
+	case 2400:
+		cfsetispeed(&newtio, B2400);
+		cfsetospeed(&newtio, B2400);
+	break;
+	case 4800:
+		cfsetispeed(&newtio, B4800);
+		cfsetospeed(&newtio, B4800);
+	break;
+	case 9600:
+		cfsetispeed(&newtio, B9600);
+		cfsetospeed(&newtio, B9600);
+	break;
+	case 115200:
+		cfsetispeed(&newtio, B115200);
+		cfsetospeed(&newtio, B115200);
+	break;
+	default:
+		cfsetispeed(&newtio, B9600);
+		cfsetospeed(&newtio, B9600);
+	break;
+	}
+	
+	if( nStop == 1 )
+		newtio.c_cflag &= ~CSTOPB;
+	else if ( nStop == 2 )
+		newtio.c_cflag |= CSTOPB;
+	
+	newtio.c_cc[VMIN]  = 1;  /* 读数据时的最小字节数: 没读到这些数据我就不返回! */
+	newtio.c_cc[VTIME] = 0; /* 等待第1个数据的时间: 
+	                         * 比如VMIN设为10表示至少读到10个数据才返回,
+	                         * 但是没有数据总不能一直等吧? 可以设置VTIME(单位是10秒)
+	                         * 假设VTIME=1，表示: 
+	                         *    10秒内一个数据都没有的话就返回
+	                         *    如果10秒内至少读到了1个字节，那就继续等待，完全读到VMIN个数据再返回
+	                         */
+
+	tcflush(fd,TCIFLUSH);
+	
+	if((tcsetattr(fd,TCSANOW,&newtio))!=0)
+	{
+		perror("com set error");
+		return -1;
+	}
+	//printf("set done!\n");
+	return 0;
+}
+
+int open_port(char *com)
+{
+	int fd;
+	//fd = open(com, O_RDWR|O_NOCTTY|O_NDELAY);
+	fd = open(com, O_RDWR|O_NOCTTY);
+    if (-1 == fd){
+		return(-1);
+    }
+	
+	  if(fcntl(fd, F_SETFL, 0)<0) /* 设置串口为阻塞状态*/
+	  {
+			printf("fcntl failed!\n");
+			return -1;
+	  }
+  
+	  return fd;
+}
+
+
+int read_gps_raw_data(int fd, char *buf)
+{
+	int i = 0;
+	int iRet;
+	char c;
+	int start = 0;
+	
+	while (1)
+	{
+		iRet = read(fd, &c, 1);
+		if (iRet == 1)
+		{
+			if (c == '$')
+				start = 1;
+			if (start)
+			{
+				buf[i++] = c;
+			}
+			if (c == '\n' || c == '\r')
+				return 0;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+}
+
+/* eg. $GPGGA,082559.00,4005.22599,N,11632.58234,E,1,04,3.08,14.6,M,-5.6,M,,*76"<CR><LF> */
+int parse_gps_raw_data(char *buf, char *time, char *lat, char *ns, char *lng, char *ew)
+{
+	char tmp[10];
+	
+	if (buf[0] != '$')
+		return -1;
+	else if (strncmp(buf+3, "GGA", 3) != 0)
+		return -1;
+	else if (strstr(buf, ",,,,,"))
+	{
+		printf("Place the GPS to open area\n");
+		return -1;
+	}
+	else {
+		//printf("raw data: %s\n", buf);
+		sscanf(buf, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]", tmp, time, lat, ns, lng, ew);
+		return 0;
+	}
+}
+
+
+/*
+ * ./serial_send_recv <dev>
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	int iRet;
+	char c;
+	char buf[1000];
+	char time[100];
+	char Lat[100]; 
+	char ns[100]; 
+	char Lng[100]; 
+	char ew[100];
+
+	float fLat, fLng;
+
+	/* 1. open */
+
+	/* 2. setup 
+	 * 115200,8N1
+	 * RAW mode
+	 * return data immediately
+	 */
+
+	/* 3. write and read */
+	
+	if (argc != 2)
+	{
+		printf("Usage: \n");
+		printf("%s </dev/ttySAC1 or other>\n", argv[0]);
+		return -1;
+	}
+
+	fd = open_port(argv[1]);
+	if (fd < 0)
+	{
+		printf("open %s err!\n", argv[1]);
+		return -1;
+	}
+
+	iRet = set_opt(fd, 9600, 8, 'N', 1);
+	if (iRet)
+	{
+		printf("set port err!\n");
+		return -1;
+	}
+
+	while (1)
+	{
+		/* eg. $GPGGA,082559.00,4005.22599,N,11632.58234,E,1,04,3.08,14.6,M,-5.6,M,,*76"<CR><LF>*/
+		/* read line */
+		iRet = read_gps_raw_data(fd, buf);
+		
+		/* parse line */
+		if (iRet == 0)
+		{
+			iRet = parse_gps_raw_data(buf, time, Lat, ns, Lng, ew);
+		}
+		
+		/* printf */
+		if (iRet == 0)
+		{
+			printf("Time : %s\n", time);
+			printf("ns   : %s\n", ns);
+			printf("ew   : %s\n", ew);
+			printf("Lat  : %s\n", Lat);
+			printf("Lng  : %s\n", Lng);
+
+			/* 纬度格式: ddmm.mmmm */
+			sscanf(Lat+2, "%f", &fLat);
+			fLat = fLat / 60;
+			fLat += (Lat[0] - '0')*10 + (Lat[1] - '0');
+
+			/* 经度格式: dddmm.mmmm */
+			sscanf(Lng+3, "%f", &fLng);
+			fLng = fLng / 60;
+			fLng += (Lng[0] - '0')*100 + (Lng[1] - '0')*10 + (Lng[2] - '0');
+			printf("Lng,Lat: %.06f,%.06f\n", fLng, fLat);
+		}
+	}
+
+	return 0;
+}
+
+
+```
 
