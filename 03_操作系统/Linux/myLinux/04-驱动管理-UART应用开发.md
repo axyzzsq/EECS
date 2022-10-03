@@ -13,7 +13,7 @@ UART的全称是Universal Asynchronous Receiver and Transmitter，即异步发�
 串口因为结构简单、稳定可靠，广受欢迎。
 
 通过三根线即可，发送、接收、地线。
-<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_001.jpg">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_001.jpg)
 通过TxD->RxD把ARM开发板要发送的信息发送给PC机。
 通过RxD->TxD线把PC机要发送的信息发送给ARM开发板。
 最下面的地线统一参考地。
@@ -37,15 +37,15 @@ UART的全称是Universal Asynchronous Receiver and Transmitter，即异步发�
   *  PC在低电平开始处计时；
   *  ARM根据数据依次驱动TxD的电平，同时PC依次读取RxD引脚电平，获得数据；
 
-  <img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_002.jpg">
+  ![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_002.jpg)
 
 前面图中提及到了逻辑电平，也就是说代表信号1的引脚电平是人为规定的。
 如图是TTL/CMOS逻辑电平下，传输‘A’时的波形：
-<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_003.jpg">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_003.jpg)
 在xV至5V之间，就认为是逻辑1，在0V至yV之间就为逻辑0。
 
 如图是RS-232逻辑电平下，传输‘A’时的波形：
-<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_004.jpg">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_004.jpg)
 在-12V至-3V之间，就认为是逻辑1，在+3V至+12V之间就为逻辑0。
 
 RS-232的电平比TTL/CMOS高，能传输更远的距离，在工业上用得比较多。
@@ -55,16 +55,16 @@ RS-232的电平比TTL/CMOS高，能传输更远的距离，在工业上用得比
 ### 3. 串口电平
 
 ARM芯片上得串口都是TTL电平的，通过板子上或者外接的电平转换芯片，转成RS232接口，连接到电脑的RS232串口上，实现两者的数据传输。
-<img src="F:\韦东山系列\韦东山\doc_and_source_for_drivers\IMX6ULL\doc_pic\09_UART\pic\lesson1\lesson1_005.jpg">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_005.jpg)
 现在的电脑越来越少有RS232串口的接口，当USB是几乎都有的。因此使用USB串口芯片将ARM芯片上的TTL电平转换成USB串口协议，即可通过USB与电脑数据传输。
-<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_006.jpg">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_006.jpg)
 上面的两种方式，对ARM芯片的编程操作都是一样的。
 
 ### 4. 串口内部结构
 
 ARM芯片是如何发送/接收数据？
 如图所示串口结构图：
-<img src="https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_007.bmp">
+![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/lesson1_007.bmp)
 要发送数据时，CPU控制内存要发送的数据通过FIFO传给UART单位，UART里面的移位器，依次将数据发送出去，在发送完成后产生中断提醒CPU传输完成。
 接收数据时，获取接收引脚的电平，逐位放进接收移位器，再放入FIFO，写入内存。在接收完成后产生中断提醒CPU传输完成。
 
