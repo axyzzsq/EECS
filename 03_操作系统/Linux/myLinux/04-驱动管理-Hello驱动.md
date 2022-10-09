@@ -75,6 +75,8 @@ unregister_chrde
       ```
     
       如此，应用层打开/dev下面的设备即为驱动程序创建的设备，返回的fd可以在内核找到对应此次open操作生成的file结构体，在这个结构体中由对应的`file_operations`驱动对应的操作函数。**是这样吗？？？？？那主设备号怎么起作用？**
+    
+      应用层打开/dev下面的设备，这个设备名本身由驱动程序中指定，插入内核之后生成，设备名与设备号绑定，打开设备名，也就找到了设备号，通过设备号在内核中`chrdev[]`查找到对应的驱动程序`file_operations`的操作函数；
 
 应用层：
 
@@ -134,8 +136,6 @@ fd = open("/dev/hello", O_RDWR);
   ```
 
   - `struct file`结构体中嵌套了一个`struct file_operations`结构体
-
-
 
 ## 二、如何写？
 
@@ -224,7 +224,7 @@ static int __init hello_init(void)
 	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
 	major = register_chrdev(0, "hello", &hello_drv);  /* /dev/hello */
 
-
+/* 7. 其他完善：提供设备信息，自动创建设备节点                                     */
 	hello_class = class_create(THIS_MODULE, "hello_class");
 	err = PTR_ERR(hello_class);
 	if (IS_ERR(hello_class)) {
@@ -248,7 +248,7 @@ static void __exit hello_exit(void)
 }
 
 
-/* 7. 其他完善：提供设备信息，自动创建设备节点                                     */
+
 
 module_init(hello_init);
 module_exit(hello_exit);
