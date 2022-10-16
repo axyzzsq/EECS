@@ -139,11 +139,104 @@ MODULE_LICENSE("GPL");
 
  ### ledtest.c
 
+```C
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
+
+
+// ledtest /dev/myled on
+// ledtest /dev/myled off
+
+int main(int argc, char **argv)
+{
+	int fd;
+	char status = 0;
+	
+	if (argc != 3)
+	{
+		printf("Usage: %s <dev> <on|off>\n", argv[0]);
+		printf("  eg: %s /dev/myled on\n", argv[0]);
+		printf("  eg: %s /dev/myled off\n", argv[0]);
+		return -1;
+	}
+	// open
+	fd = open(argv[1], O_RDWR);
+	if (fd < 0)
+	{
+		printf("can not open %s\n", argv[0]);
+		return -1;
+	}
+
+	// write
+	if (strcmp(argv[2], "on") == 0)
+	{
+		status = 1;
+	}
+
+	write(fd, &status, 1);
+	return 0;	
+}
+
+
+```
+
 
 
 ### Makefile
 
+```makefile
+
+# 1. 使用不同的开发板内核时, 一定要修改KERN_DIR
+# 2. KERN_DIR中的内核要事先配置、编译, 为了能编译内核, 要先设置下列环境变量:
+# 2.1 ARCH,          比如: export ARCH=arm64
+# 2.2 CROSS_COMPILE, 比如: export CROSS_COMPILE=aarch64-linux-gnu-
+# 2.3 PATH,          比如: export PATH=$PATH:/home/book/100ask_roc-rk3399-pc/ToolChain-6.3.1/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin 
+# 注意: 不同的开发板不同的编译器上述3个环境变量不一定相同,
+#       请参考各开发板的高级用户使用手册
+
+KERN_DIR = /home/book/100ask_imx6ull-sdk/Linux-4.9.88/
+
+all:
+	make -C $(KERN_DIR) M=`pwd` modules 
+	$(CROSS_COMPILE)gcc -o ledtest ledtest.c 
+
+clean:
+	make -C $(KERN_DIR) M=`pwd` modules clean
+	rm -rf modules.order
+	rm -f ledtest
+
+obj-m	+= led_drv.o
 
 
-### 运行效果
+```
+
+### 编译
+
+![image-20221016143249704](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221016143249704.png)
+
+### 板端运行
+
+```shell
+# 安装驱动
+insmod led_drv.ko
+
+# 查看驱动
+lsmod
+
+# 查看设备
+ls /dev/myled
+
+# 执行测试
+./ledtest /dev/myled on
+./ledtest /dev/myled off
+
+```
+
+
+
+
 
