@@ -2,7 +2,9 @@
 
 ## 第1节 LED Drv Simple
 
-### led_drv.c
+### 一、驱动代码
+
+#### led_drv.c
 
 ```C
 #include <linux/kernel.h>
@@ -125,8 +127,6 @@ module_init(led_init);
 module_exit(led_exit);
 MODULE_LICENSE("GPL");
 
-
-
 ```
 
 [参考文献]
@@ -135,9 +135,11 @@ MODULE_LICENSE("GPL");
 
 - [Linux内核API之class_create与class_destroy](https://blog.csdn.net/phmatthaus/article/details/124473300?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166584155616782388081858%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=166584155616782388081858&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-124473300-null-null.142^v56^pc_search_v3,201^v3^control_1&utm_term=%E5%87%BD%E6%95%B0class_destroy&spm=1018.2226.3001.4187)
 
-  
 
- ### ledtest.c
+
+### 二、应用代码
+
+ #### ledtest.c
 
 ```C
 #include <sys/types.h>
@@ -186,7 +188,7 @@ int main(int argc, char **argv)
 
 
 
-### Makefile
+### 三、Makefile
 
 ```makefile
 
@@ -214,11 +216,11 @@ obj-m	+= led_drv.o
 
 ```
 
-### 编译
+### 四、编译
 
 ![image-20221016143249704](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221016143249704.png)
 
-### 板端运行
+### 五、板端运行
 
 ```shell
 # 安装驱动
@@ -235,6 +237,20 @@ ls /dev/myled
 ./ledtest /dev/myled off
 
 ```
+
+
+
+## 第2节 led_drv_for_boards
+
+### 一、驱动代码
+
+
+
+### 二、应用代码
+
+
+
+### 三、Makefile
 
 
 
