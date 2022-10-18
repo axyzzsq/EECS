@@ -240,17 +240,308 @@ ls /dev/myled
 
 
 
-## 第2节 led_drv_for_boards
+## 第2节 led_drv_template
 
 ### 一、驱动代码
+
+#### led_opr.h
+
+```C
+#ifndef _LED_OPR_H
+#define _LED_OPR_H
+
+struct led_operations {
+	int (*init) (int which); /* 初始化LED, which-哪个LED */       
+	int (*ctl) (int which, char status); /* 控制LED, which-哪个LED, status:1-亮,0-灭 */
+};
+
+struct led_operations *get_board_led_opr(void);
+
+
+#endif
+
+
+```
+
+#### board_demo.c
+
+```C
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/miscdevice.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/mutex.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/stat.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/tty.h>
+#include <linux/kmod.h>
+#include <linux/gfp.h>
+#include "led_opr.h"
+
+static int board_demo_led_init (int which) /* 初始化LED, which-哪个LED */	   
+{
+	
+	printk("%s %s line %d, led %d\n", __FILE__, __FUNCTION__, __LINE__, which);
+	return 0;
+}
+
+static int board_demo_led_ctl (int which, char status) /* 控制LED, which-哪个LED, status:1-亮,0-灭 */
+{
+	printk("%s %s line %d, led %d, %s\n", __FILE__, __FUNCTION__, __LINE__, which, status ? "on" : "off");
+	return 0;
+}
+
+static struct led_operations board_demo_led_opr = {
+	.init = board_demo_led_init,
+	.ctl  = board_demo_led_ctl,
+};
+
+struct led_operations *get_board_led_opr(void)
+{
+	return &board_demo_led_opr;
+}
+
+
+```
+
+
+
+#### leddrv.c
+
+```C
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/miscdevice.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/mutex.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/stat.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/tty.h>
+#include <linux/kmod.h>
+#include <linux/gfp.h>
+
+#include "led_opr.h"
+
+#define LED_NUM 2
+
+/* 1. 确定主设备号                                                                 */
+static int major = 0;
+static struct class *led_class;
+struct led_operations *p_led_opr;
+
+
+#define MIN(a, b) (a < b ? a : b)
+
+/* 3. 实现对应的open/read/write等函数，填入file_operations结构体                   */
+static ssize_t led_drv_read (struct file *file, char __user *buf, size_t size, loff_t *offset)
+{
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* write(fd, &val, 1); */
+static ssize_t led_drv_write (struct file *file, const char __user *buf, size_t size, loff_t *offset)
+{
+	int err;
+	char status;
+	struct inode *inode = file_inode(file);
+	int minor = iminor(inode);
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	err = copy_from_user(&status, buf, 1);
+
+	/* 根据次设备号和status控制LED */
+	p_led_opr->ctl(minor, status);
+	
+	return 1;
+}
+
+static int led_drv_open (struct inode *node, struct file *file)
+{
+	int minor = iminor(node);
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	/* 根据次设备号初始化LED */
+	p_led_opr->init(minor);
+	
+	return 0;
+}
+
+static int led_drv_close (struct inode *node, struct file *file)
+{
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* 2. 定义自己的file_operations结构体                                              */
+static struct file_operations led_drv = {
+	.owner	 = THIS_MODULE,
+	.open    = led_drv_open,
+	.read    = led_drv_read,
+	.write   = led_drv_write,
+	.release = led_drv_close,
+};
+
+/* 4. 把file_operations结构体告诉内核：注册驱动程序                                */
+/* 5. 谁来注册驱动程序啊？得有一个入口函数：安装驱动程序时，就会去调用这个入口函数 */
+static int __init led_init(void)
+{
+	int err;
+	int i;
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	major = register_chrdev(0, "100ask_led", &led_drv);  /* /dev/led */
+
+
+	led_class = class_create(THIS_MODULE, "100ask_led_class");
+	err = PTR_ERR(led_class);
+	if (IS_ERR(led_class)) {
+		printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+		unregister_chrdev(major, "100ask_led");
+		return -1;
+	}
+
+	for (i = 0; i < LED_NUM; i++)
+		device_create(led_class, NULL, MKDEV(major, i), NULL, "100ask_led%d", i); /* /dev/100ask_led0,1,... */
+
+	p_led_opr = get_board_led_opr();
+	
+	return 0;
+}
+
+/* 6. 有入口函数就应该有出口函数：卸载驱动程序时，就会去调用这个出口函数           */
+static void __exit led_exit(void)
+{
+	int i;
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+
+	for (i = 0; i < LED_NUM; i++)
+		device_destroy(led_class, MKDEV(major, i)); /* /dev/100ask_led0,1,... */
+
+	device_destroy(led_class, MKDEV(major, 0));
+	class_destroy(led_class);
+	unregister_chrdev(major, "100ask_led");
+}
+
+
+/* 7. 其他完善：提供设备信息，自动创建设备节点                                     */
+
+module_init(led_init);
+module_exit(led_exit);
+
+MODULE_LICENSE("GPL");
+
+
+
+```
 
 
 
 ### 二、应用代码
 
+#### ledtest.c
+
+```C
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+/*
+ * ./ledtest /dev/100ask_led0 on
+ * ./ledtest /dev/100ask_led0 off
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	char status;
+	
+	/* 1. 判断参数 */
+	if (argc != 3) 
+	{
+		printf("Usage: %s <dev> <on | off>\n", argv[0]);
+		return -1;
+	}
+
+	/* 2. 打开文件 */
+	fd = open(argv[1], O_RDWR);
+	if (fd == -1)
+	{
+		printf("can not open file %s\n", argv[1]);
+		return -1;
+	}
+
+	/* 3. 写文件 */
+	if (0 == strcmp(argv[2], "on"))
+	{
+		status = 1;
+		write(fd, &status, 1);
+	}
+	else
+	{
+		status = 0;
+		write(fd, &status, 1);
+	}
+	
+	close(fd);
+	
+	return 0;
+}
+
+
+
+```
+
 
 
 ### 三、Makefile
+
+```makefile
+
+# 1. 使用不同的开发板内核时, 一定要修改KERN_DIR
+# 2. KERN_DIR中的内核要事先配置、编译, 为了能编译内核, 要先设置下列环境变量:
+# 2.1 ARCH,          比如: export ARCH=arm64
+# 2.2 CROSS_COMPILE, 比如: export CROSS_COMPILE=aarch64-linux-gnu-
+# 2.3 PATH,          比如: export PATH=$PATH:/home/book/100ask_roc-rk3399-pc/ToolChain-6.3.1/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin 
+# 注意: 不同的开发板不同的编译器上述3个环境变量不一定相同,
+#       请参考各开发板的高级用户使用手册
+
+KERN_DIR = /home/book/100ask_roc-rk3399-pc/linux-4.4
+
+all:
+	make -C $(KERN_DIR) M=`pwd` modules 
+	$(CROSS_COMPILE)gcc -o ledtest ledtest.c 
+
+clean:
+	make -C $(KERN_DIR) M=`pwd` modules clean
+	rm -rf modules.order
+	rm -f ledtest
+
+# 参考内核源码drivers/char/ipmi/Makefile
+# 要想把a.c, b.c编译成ab.ko, 可以这样指定:
+# ab-y := a.o b.o
+# obj-m += ab.o
+
+# leddrv.c board_demo.c 编译成 100ask.ko
+100ask_led-y := leddrv.o board_demo.o
+obj-m	+= 100ask_led.o
+
+```
 
 
 
