@@ -549,9 +549,9 @@ obj-m	+= 100ask_led.o
 
 ## 第3节 Led drv for boards
 
-#### 一、驱动代码
+### 一、驱动代码
 
-##### led_opr.h
+#### led_opr.h
 
 ```C
 #ifndef _LED_OPR_H
@@ -568,11 +568,7 @@ struct led_operations *get_board_led_opr(void);
 
 ```
 
-
-
-##### 
-
-##### board_100ask_imx6ull.c
+#### board_100ask_imx6ull.c
 
 ```C
 #include <linux/module.h>
@@ -688,7 +684,7 @@ struct led_operations *get_board_led_opr(void)
 
 ```
 
-##### leddrv.c
+#### leddrv.c
 
 ```C
 #include <linux/module.h>
@@ -842,9 +838,9 @@ MODULE_LICENSE("GPL");
 
   用户控制`/dev`目录下的设备能够实现控制则是因为，`/dev`目录下的设备本身就是由驱动程序生成的，一旦驱动程序注销，则这个设备也就不存在；在申请主设备号时候`major = register_chrdev(0, "100ask_led", &led_drv); `，驱动程序被注册到内核的`chrdev[]`，驱动生成的/dev设备也带有`major`信息，当这个设备 被打开的时候，就会向内核询问是否有相同的`major`号的程序已经注册进去，如果有，就打开这个驱动程序
 
-#### 二、应用代码
+### 二、应用代码
 
-##### ledtest.c
+#### ledtest.c
 
 ```C
 
@@ -900,7 +896,7 @@ int main(int argc, char **argv)
 
 
 
-#### 三、Makefile
+### 三、Makefile
 
 ```makefile
 
