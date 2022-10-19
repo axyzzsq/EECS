@@ -825,7 +825,7 @@ MODULE_LICENSE("GPL");
 
   ```C
   static struct led_operations board_demo_led_opr = {
-      .num  = 2,  //创建出一个设备
+      .num  = 2,  //创建出2个设备
       .init = board_demo_led_init,
       .ctl  = board_demo_led_ctl,
   };
