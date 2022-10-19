@@ -547,3 +547,390 @@ obj-m	+= 100ask_led.o
 
 
 
+## 第3节 Led drv for boards
+
+#### 一、驱动代码
+
+##### led_opr.h
+
+```C
+#ifndef _LED_OPR_H
+#define _LED_OPR_H
+
+struct led_operations {
+	int num;
+	int (*init) (int which); /* 初始化LED, which-哪个LED */       
+	int (*ctl) (int which, char status); /* 控制LED, which-哪个LED, status:1-亮,0-灭 */
+};
+struct led_operations *get_board_led_opr(void);
+
+#endif
+
+```
+
+
+
+##### 
+
+##### board_100ask_imx6ull.c
+
+```C
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/miscdevice.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/mutex.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/stat.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/tty.h>
+#include <linux/kmod.h>
+#include <linux/gfp.h>
+#include <asm/io.h>
+
+#include "led_opr.h"
+
+static volatile unsigned int *CCM_CCGR1                              ;
+static volatile unsigned int *IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3;
+static volatile unsigned int *GPIO5_GDIR                             ;
+static volatile unsigned int *GPIO5_DR                               ;
+
+static int board_demo_led_init (int which) /* 初始化LED, which-哪个LED */       
+{
+    unsigned int val;
+
+    //printk("%s %s line %d, led %d\n", __FILE__, __FUNCTION__, __LINE__, which);
+    if (which == 0)
+    {
+        if (!CCM_CCGR1)
+        {
+            CCM_CCGR1                               = ioremap(0x20C406C, 4);
+            IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3 = ioremap(0x2290014, 4);
+            GPIO5_GDIR                              = ioremap(0x020AC000 + 0x4, 4);
+            GPIO5_DR                                = ioremap(0x020AC000 + 0, 4);
+        }
+        
+        /* GPIO5_IO03 */
+        /* a. 使能GPIO5
+         * set CCM to enable GPIO5
+         * CCM_CCGR1[CG15] 0x20C406C
+         * bit[31:30] = 0b11
+         */
+        *CCM_CCGR1 |= (3<<30);
+        
+        /* b. 设置GPIO5_IO03用于GPIO
+         * set IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3
+         *      to configure GPIO5_IO03 as GPIO
+         * IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3  0x2290014
+         * bit[3:0] = 0b0101 alt5
+         */
+        val = *IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3;
+        val &= ~(0xf);
+        val |= (5);
+        *IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3 = val;
+        
+        
+        /* b. 设置GPIO5_IO03作为output引脚
+         * set GPIO5_GDIR to configure GPIO5_IO03 as output
+         * GPIO5_GDIR  0x020AC000 + 0x4
+         * bit[3] = 0b1
+         */
+        *GPIO5_GDIR |= (1<<3);
+    }
+    
+    return 0;
+}
+
+static int board_demo_led_ctl (int which, char status) /* 控制LED, which-哪个LED, status:1-亮,0-灭 */
+{
+    //printk("%s %s line %d, led %d, %s\n", __FILE__, __FUNCTION__, __LINE__, which, status ? "on" : "off");
+    if (which == 0)
+    {
+        if (status) /* on: output 0*/
+        {
+            /* d. 设置GPIO5_DR输出低电平
+             * set GPIO5_DR to configure GPIO5_IO03 output 0
+             * GPIO5_DR 0x020AC000 + 0
+             * bit[3] = 0b0
+             */
+            *GPIO5_DR &= ~(1<<3);
+        }
+        else  /* off: output 1*/
+        {
+            /* e. 设置GPIO5_IO3输出高电平
+             * set GPIO5_DR to configure GPIO5_IO03 output 1
+             * GPIO5_DR 0x020AC000 + 0
+             * bit[3] = 0b1
+             */ 
+            *GPIO5_DR |= (1<<3);
+        }
+    
+    }
+    return 0;
+}
+
+static struct led_operations board_demo_led_opr = {
+    .num  = 1,  //创建出一个设备
+    .init = board_demo_led_init,
+    .ctl  = board_demo_led_ctl,
+};
+
+struct led_operations *get_board_led_opr(void)
+{
+    return &board_demo_led_opr;
+}
+
+
+```
+
+##### leddrv.c
+
+```C
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/miscdevice.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/mutex.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/stat.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/tty.h>
+#include <linux/kmod.h>
+#include <linux/gfp.h>
+
+#include "led_opr.h"
+
+
+/* 1. 确定主设备号                                                                 */
+static int major = 0;
+static struct class *led_class;
+struct led_operations *p_led_opr;
+
+
+#define MIN(a, b) (a < b ? a : b)
+
+/* 3. 实现对应的open/read/write等函数，填入file_operations结构体                   */
+static ssize_t led_drv_read (struct file *file, char __user *buf, size_t size, loff_t *offset)
+{
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* write(fd, &val, 1); */
+static ssize_t led_drv_write (struct file *file, const char __user *buf, size_t size, loff_t *offset)
+{
+	int err;
+	char status;
+	struct inode *inode = file_inode(file);
+	int minor = iminor(inode);
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	err = copy_from_user(&status, buf, 1);
+
+	/* 根据次设备号和status控制LED */
+	p_led_opr->ctl(minor, status);
+	
+	return 1;
+}
+
+static int led_drv_open (struct inode *node, struct file *file)
+{
+	int minor = iminor(node);
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	/* 根据次设备号初始化LED */
+	p_led_opr->init(minor);
+	
+	return 0;
+}
+
+static int led_drv_close (struct inode *node, struct file *file)
+{
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* 2. 定义自己的file_operations结构体                                              */
+static struct file_operations led_drv = {
+	.owner	 = THIS_MODULE,
+	.open    = led_drv_open,
+	.read    = led_drv_read,
+	.write   = led_drv_write,
+	.release = led_drv_close,
+};
+
+/* 4. 把file_operations结构体告诉内核：注册驱动程序                                */
+/* 5. 谁来注册驱动程序啊？得有一个入口函数：安装驱动程序时，就会去调用这个入口函数 */
+static int __init led_init(void)
+{
+	int err;
+	int i;
+	
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+	major = register_chrdev(0, "100ask_led", &led_drv); 
+
+
+	led_class = class_create(THIS_MODULE, "intretech_led_class");
+	err = PTR_ERR(led_class);
+	if (IS_ERR(led_class)) {
+		printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+		unregister_chrdev(major, "led");
+		return -1;
+	}
+
+	p_led_opr = get_board_led_opr();
+
+	for (i = 0; i < p_led_opr->num; i++)
+		device_create(led_class, NULL, MKDEV(major, i), NULL, "intretech_dev%d", i); /* /dev/100ask_led0,1,... */
+
+	
+	return 0;
+}
+
+/* 6. 有入口函数就应该有出口函数：卸载驱动程序时，就会去调用这个出口函数           */
+static void __exit led_exit(void)
+{
+	int i;
+	printk("%s %s line %d\n", __FILE__, __FUNCTION__, __LINE__);
+
+	for (i = 0; i < p_led_opr->num; i++)
+		device_destroy(led_class, MKDEV(major, i)); /* /dev/100ask_led0,1,... */
+
+	device_destroy(led_class, MKDEV(major, 0));
+	class_destroy(led_class);
+	unregister_chrdev(major, "100ask_led");
+}
+
+
+/* 7. 其他完善：提供设备信息，自动创建设备节点                                     */
+
+module_init(led_init);
+module_exit(led_exit);
+
+MODULE_LICENSE("GPL");
+
+```
+
+- 把`board_100ask_imx6ull.c`程序中的`board_demo_led_opr`修改为两个设备，
+
+  ```C
+  static struct led_operations board_demo_led_opr = {
+      .num  = 2,  //创建出一个设备
+      .init = board_demo_led_init,
+      .ctl  = board_demo_led_ctl,
+  };
+  
+  ```
+
+  则在`sys/class`的`intretech_led_class`则会生成两个设备，对应于/dev目录下的两个设备
+
+  - 在驱动中，先创建类，在类的下面创建设备。
+
+  ![image-20221020005539891](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221020005539891.png)
+
+  驱动程序通过`copy_from_user`函数从用户层获取用户输入的参数，根据参数控制对应/dev设备;
+
+  用户控制`/dev`目录下的设备能够实现控制则是因为，`/dev`目录下的设备本身就是由驱动程序生成的，一旦驱动程序注销，则这个设备也就不存在；在申请主设备号时候`major = register_chrdev(0, "100ask_led", &led_drv); `，驱动程序被注册到内核的`chrdev[]`，驱动生成的/dev设备也带有`major`信息，当这个设备 被打开的时候，就会向内核询问是否有相同的`major`号的程序已经注册进去，如果有，就打开这个驱动程序
+
+#### 二、应用代码
+
+##### ledtest.c
+
+```C
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+/*
+ * ./ledtest /dev/100ask_led0 on
+ * ./ledtest /dev/100ask_led0 off
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	char status;
+	
+	/* 1. 判断参数 */
+	if (argc != 3) 
+	{
+		printf("Usage: %s <dev> <on | off>\n", argv[0]);
+		return -1;
+	}
+
+	/* 2. 打开文件 */
+	fd = open(argv[1], O_RDWR);
+	if (fd == -1)
+	{
+		printf("can not open file %s\n", argv[1]);
+		return -1;
+	}
+
+	/* 3. 写文件 */
+	if (0 == strcmp(argv[2], "on"))
+	{
+		status = 1;
+		write(fd, &status, 1);
+	}
+	else
+	{
+		status = 0;
+		write(fd, &status, 1);
+	}
+	
+	close(fd);
+	
+	return 0;
+}
+
+```
+
+
+
+#### 三、Makefile
+
+```makefile
+
+# 1. 使用不同的开发板内核时, 一定要修改KERN_DIR
+# 2. KERN_DIR中的内核要事先配置、编译, 为了能编译内核, 要先设置下列环境变量:
+# 2.1 ARCH,          比如: export ARCH=arm64
+# 2.2 CROSS_COMPILE, 比如: export CROSS_COMPILE=aarch64-linux-gnu-
+# 2.3 PATH,          比如: export PATH=$PATH:/home/book/100ask_roc-rk3399-pc/ToolChain-6.3.1/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin 
+# 注意: 不同的开发板不同的编译器上述3个环境变量不一定相同,
+#       请参考各开发板的高级用户使用手册
+
+KERN_DIR = /home/book/100ask_imx6ull-sdk/Linux-4.9.88
+
+all:
+	make -C $(KERN_DIR) M=`pwd` modules 
+	$(CROSS_COMPILE)gcc -o ledtest ledtest.c 
+
+clean:
+	make -C $(KERN_DIR) M=`pwd` modules clean
+	rm -rf modules.order
+	rm -f ledtest
+
+# 参考内核源码drivers/char/ipmi/Makefile
+# 要想把a.c, b.c编译成ab.ko, 可以这样指定:
+# ab-y := a.o b.o
+# obj-m += ab.o
+
+# leddrv.c board_100ask_imx6ull.c 编译成 100ask_led.ko
+100ask_led-y := leddrv.o board_100ask_imx6ull.o
+obj-m	+= 100ask_led.o
+
+```
+
