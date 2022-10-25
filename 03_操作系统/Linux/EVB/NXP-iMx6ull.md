@@ -50,7 +50,7 @@
 ## 1. NFS挂载
 
 ```shell
-mount -t nfs -o nolock,vers=3 192.168.123.4:/home/book/nfs_rootfs /mnt
+mount -t nfs -o nolock,vers=3 192.168.123.13:/home/book/nfs_rootfs /mnt
 ```
 
 ## 2. 配置交叉编译工具链
