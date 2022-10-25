@@ -938,6 +938,8 @@ obj-m	+= 100ask_led.o
 
  ![img](https://raw.githubusercontent.com/axyzzsq/MyPicture/main/%E9%A9%B1%E5%8A%A8%E5%88%86%E5%B1%82%E5%88%86%E7%A6%BB.drawio.png)
 
+![image-20221025101256104](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221025101256104.png)
+
 ### 二、驱动代码
 
 #### led_opr.h
@@ -961,7 +963,7 @@ struct led_operations *get_board_led_opr(void);  //把和板子相关的init和c
 
 #### board_A_board.c
 
-- 用以指定A板子使用乐什么管脚
+- 用以指定A板子使用了什么管脚
 
 ```C
 
