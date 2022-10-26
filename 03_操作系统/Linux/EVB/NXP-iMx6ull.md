@@ -193,3 +193,9 @@ insmod  100ask_led.ko
 
 卸载驱动命令 `rmmod 100ask_led`
 
+
+- 打开内核日志
+```shell
+echo '7 4 1 7' > /proc/sys/kernel/printk
+```
+
