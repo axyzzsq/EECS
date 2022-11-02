@@ -64,7 +64,21 @@ static struct file_operations led_drv = {
 
 ### 4、异步通知方式
 
-​		
+![image-20221102211158328](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221102211158328.png)
+
+```C
+/* 在驱动里面定义自己的file_operations结构体                                              */
+static struct file_operations led_drv = {
+	.owner	 = THIS_MODULE,
+	.open    = my_open,
+	.read    = my_read,
+	.write   = my_write,
+    .fasync  = 
+	.release = my_close,
+};
+```
+
+
 
 
 
