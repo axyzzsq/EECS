@@ -22,6 +22,7 @@ int Person::setAge(int age)
 
 void Person::printInfo(void)
 {
+	//cout  和 endl 属于标准命名空间
 	std::cout<<"name = "<<name<<" age = "<<age<<" work = "<<work<<std::endl; 
 }
 

@@ -1,5 +1,5 @@
 
-person: main.o person.o
+person: main.o person.o 
 	g++ -o $@ $^
 
 %.o : %.cpp

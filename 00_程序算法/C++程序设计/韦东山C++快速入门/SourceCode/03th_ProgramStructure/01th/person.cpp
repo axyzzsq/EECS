@@ -7,17 +7,20 @@ private:
 	int age;
 	char *work;
 
+//类内声明,在类外实现函数
 public:
 	void setName(char *name);
 	int setAge(int age);
 	void printInfo(void);
 };
 
+//说明实现的是person类内的函数setName
 void Person::setName(char *name)
 {
 	this->name = name;
 }
 
+//说明实现的是person类内的函数setAge
 int Person::setAge(int age)
 {
 	if (age < 0 || age > 150)

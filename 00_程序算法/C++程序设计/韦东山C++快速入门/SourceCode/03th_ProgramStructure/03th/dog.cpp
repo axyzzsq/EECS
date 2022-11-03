@@ -25,6 +25,7 @@ void Dog::printInfo(void)
 	printf("name = %s, age = %d\n", name, age); 
 }
 
+
 void printVersion(void)
 {
 	printf("Dog v1, by weidongshan\n");

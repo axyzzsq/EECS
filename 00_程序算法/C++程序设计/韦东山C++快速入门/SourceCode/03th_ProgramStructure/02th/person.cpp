@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include "person.h"
+#include "person.h" 
 
 void Person::setName(char *name)
 {

@@ -3,7 +3,7 @@
 #include "person.h"
 #include "dog.h"
 
-using namespace A;
+using namespace A; //把A空间的所有类和函数全部导入进来
 using namespace C;
 
 int main(int argc, char **argv)
