@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 
+//class指定public则默认为private
 class Person {
 private:
 	char *name;
@@ -12,7 +13,7 @@ public:
 	{
 		name = n;
 	}
-	int setAge(int a)
+	int setAge(int a) 
 	{
 		if (a < 0 || a > 150)
 		{
