@@ -140,3 +140,284 @@ kill -SIGIO 2633  #给这个进程发信号
 
 ## 第2节 查询方式的按键驱动程序-编写框架
 
+套路:
+
+![image-20221106161051358](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221106161051358.png)
+
+button_drv.h
+
+**这个头文件中定义了不同板子向驱动注册的接口，应该被各个demo板子的文件所包含，当板子的驱动插入之后，把板端的设备初始化和设备操作函数传参给button_drv.ko，与此同时,button_drv.ko才创建出/dev目录下对应的设备。**
+
+```C
+#ifndef _BUTTON_DRV_H
+#define _BUTTON_DRV_H
+
+struct button_operations {
+    int count;
+    void (*init) (int which);
+    int (*read) (int which);
+};
+
+void register_button_operations(struct button_operations *opr);
+void unregister_button_operations(void);
+
+#endif
+```
+
+button_drv.c
+
+```C
+#include <linux/module.h>
+#include <linux/errno.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/sched.h>
+#include <linux/slab.h>
+#include <linux/fcntl.h>
+#include <linux/fs.h>
+#include <linux/signal.h>
+#include <linux/mutex.h>
+#include <linux/mm.h>
+#include <linux/timer.h>
+#include <linux/wait.h>
+#include <linux/skbuff.h>
+#include <linux/proc_fs.h>
+#include <linux/poll.h>
+#include <linux/capi.h>
+#include <linux/kernelcapi.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/moduleparam.h>
+
+#include "button_drv.h"
+
+
+static int major = 0;
+
+static struct button_operations *p_button_opr;
+static struct class *button_class;
+
+static int button_open (struct inode *inode, struct file *file)
+{
+    int minor = iminor(inode);
+    p_button_opr->init(minor);
+    return 0;
+}
+
+static ssize_t button_read (struct file *file, char __user *buf, size_t size, loff_t *off)
+{
+    unsigned int minor = iminor(file_inode(file));
+    char level;
+    int err;
+    
+    level = p_button_opr->read(minor);
+    err = copy_to_user(buf, &level, 1);
+    return 1;
+}
+
+
+static struct file_operations button_fops = {
+    .open = button_open,
+    .read = button_read,
+};
+
+void register_button_operations(struct button_operations *opr)
+{
+    int i;
+
+    p_button_opr = opr;
+    for (i = 0; i < opr->count; i++)
+    {
+        device_create(button_class, NULL, MKDEV(major, i), NULL, "100ask_button%d", i);
+    }
+}
+
+void unregister_button_operations(void)
+{
+    int i;
+
+    for (i = 0; i < p_button_opr->count; i++)
+    {
+        device_destroy(button_class, MKDEV(major, i));
+    }
+}
+
+
+EXPORT_SYMBOL(register_button_operations);
+EXPORT_SYMBOL(unregister_button_operations);
+
+
+int button_init(void)
+{
+    major = register_chrdev(0, "100ask_button", &button_fops);
+
+    button_class = class_create(THIS_MODULE, "100ask_button");
+    if (IS_ERR(button_class))
+        return -1;
+    
+    return 0;
+}
+
+void button_exit(void)
+{
+    class_destroy(button_class);
+    unregister_chrdev(major, "100ask_button");
+}
+
+module_init(button_init);
+module_exit(button_exit);
+MODULE_LICENSE("GPL");
+```
+
+button_xxx.c
+
+```C
+#include <linux/module.h>
+#include <linux/errno.h>
+#include <linux/kernel.h>
+#include <linux/major.h>
+#include <linux/sched.h>
+#include <linux/slab.h>
+#include <linux/fcntl.h>
+#include <linux/fs.h>
+#include <linux/signal.h>
+#include <linux/mutex.h>
+#include <linux/mm.h>
+#include <linux/timer.h>
+#include <linux/wait.h>
+#include <linux/skbuff.h>
+#include <linux/proc_fs.h>
+#include <linux/poll.h>
+#include <linux/capi.h>
+#include <linux/kernelcapi.h>
+#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/moduleparam.h>
+
+#include "button_drv.h"
+
+
+static void board_xxx_button_init_gpio (int which)
+{
+    printk("%s %s %d, init gpio for button %d\n", __FILE__, __FUNCTION__, __LINE__, which);
+}
+
+static int board_xxx_button_read_gpio (int which)
+{
+    printk("%s %s %d, read gpio for button %d\n", __FILE__, __FUNCTION__, __LINE__, which);
+    return 1;
+}
+
+static struct button_operations my_buttons_ops ={
+    .count = 2,
+    .init  = board_xxx_button_init_gpio,
+    .read  = board_xxx_button_read_gpio,
+};
+
+int board_xxx_button_init(void)
+{
+    register_button_operations(&my_buttons_ops);
+    return 0;
+}
+
+void board_xxx_button_exit(void)
+{
+    unregister_button_operations();
+}
+
+module_init(board_xxx_button_init);
+module_exit(board_xxx_button_exit);
+
+MODULE_LICENSE("GPL");
+```
+
+button_test.c
+
+```C
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+/*
+ * ./button_test /dev/100ask_button0
+ *
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	char val;
+	
+	/* 1. 判断参数 */
+	if (argc != 2) 
+	{
+		printf("Usage: %s <dev>\n", argv[0]);
+		return -1;
+	}
+
+	/* 2. 打开文件 */
+	fd = open(argv[1], O_RDWR);
+	if (fd == -1)
+	{
+		printf("can not open file %s\n", argv[1]);
+		return -1;
+	}
+
+	/* 3. 写文件 */
+	read(fd, &val, 1);
+	printf("get button : %d\n", val);
+	
+	close(fd);
+	
+	return 0;
+}
+
+
+
+```
+
+Makefile
+
+```C
+
+# 1. 使用不同的开发板内核时, 一定要修改KERN_DIR
+# 2. KERN_DIR中的内核要事先配置、编译, 为了能编译内核, 要先设置下列环境变量:
+# 2.1 ARCH,          比如: export ARCH=arm64
+# 2.2 CROSS_COMPILE, 比如: export CROSS_COMPILE=aarch64-linux-gnu-
+# 2.3 PATH,          比如: export PATH=$PATH:/home/book/100ask_roc-rk3399-pc/ToolChain-6.3.1/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin 
+# 注意: 不同的开发板不同的编译器上述3个环境变量不一定相同,
+#       请参考各开发板的高级用户使用手册
+
+KERN_DIR = /home/book/100ask_imx6ull-sdk/Linux-4.9.88
+
+all:
+	make -C $(KERN_DIR) M=`pwd` modules 
+	$(CROSS_COMPILE)gcc -o button_test button_test.c 
+
+clean:
+	make -C $(KERN_DIR) M=`pwd` modules clean
+	rm -rf modules.order
+	rm -f ledtest
+
+# 参考内核源码drivers/char/ipmi/Makefile
+# 要想把a.c, b.c编译成ab.ko, 可以这样指定:
+# ab-y := a.o b.o
+# obj-m += ab.o
+
+
+obj-m	+= button_drv.o
+obj-m	+= board_xxx.o
+        
+```
+
+测试结果：
+
+![image-20221106164756225](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221106164756225.png)
+
+## 第3节 iMx6ull的按键驱动程序
+
+
+
