@@ -37,6 +37,7 @@ public:
 		strcpy(this->work, work);
 	}
 
+	//构建自己的拷贝构造函数
 	Person(Person &per) 
 	{
 		cout <<"Pserson(Person &)"<<endl;

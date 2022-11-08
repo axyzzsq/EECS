@@ -10,7 +10,10 @@ private:
 
 public:
 
-	Person() {cout <<"Pserson()"<<endl;}
+	Person() 
+	{
+		cout <<"Pserson()"<<endl;
+	}
 	Person(char *name) 
 	{
 		cout <<"Pserson(char *)"<<endl;

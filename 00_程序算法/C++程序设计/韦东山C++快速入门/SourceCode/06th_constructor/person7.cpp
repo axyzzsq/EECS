@@ -36,7 +36,7 @@ public:
 		this->work = new char[strlen(work) + 1];
 		strcpy(this->work, work);
 	}
-
+	//有很多构造函数只能有一个析构函数
 	~Person()
 	{
 		cout << "~Person()"<<endl;
@@ -75,8 +75,9 @@ void test_fun()
 {
 	Person per("zhangsan", 16);
 
+	//如果用new创建一个实例化对象,需要使用delete把它释放掉
 	Person *per7 = new Person("lisi", 18, "student");
-	//delete per7;
+	delete per7;
 
 }
 

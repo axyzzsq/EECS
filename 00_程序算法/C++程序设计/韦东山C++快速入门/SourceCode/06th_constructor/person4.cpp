@@ -12,9 +12,13 @@ private:
 
 public:
 
-	Person() {cout <<"Pserson()"<<endl;}
+	Person() 
+	{
+		cout <<"Pserson()"<<endl;
+	}
 	Person(char *name) 
 	{
+		//在构造函数中申�?�内存存放参�?
 		cout <<"Pserson(char *)"<<endl;
 		this->name = new char[strlen(name) + 1];
 		strcpy(this->name, name);

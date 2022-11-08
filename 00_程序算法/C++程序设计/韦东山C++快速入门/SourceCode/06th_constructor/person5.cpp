@@ -13,6 +13,7 @@ private:
 
 public:
 
+	//é»˜è®¤æž„é€ å‡½æ•°
 	Person() {//cout <<"Pserson()"<<endl;
 		name = NULL;
 		work = NULL;
@@ -61,7 +62,7 @@ public:
 void test_fun()
 {
 	Person per("zhangsan", 16);
-	Person per2;   /* µ÷ÓÃÎÞ²Î¹¹Ôìº¯Êý */
+	Person per2;   /* è°ƒç”¨æ— å‚æž„é€ å‡½æ•° */
 	Person per3(); /* int fun(); */
 
 	Person *per4 = new Person;

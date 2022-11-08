@@ -37,7 +37,8 @@ public:
 		strcpy(this->work, work);
 	}
 
-	~Person()
+	//实例化对象被系统销毁前的瞬间，系统会调用析构函数来释放资源
+	~Person() //析构函数,释放资源
 	{
 		if (this->name)
 			delete this->name;
@@ -69,7 +70,7 @@ public:
 void test_fun()
 {
 	Person per("zhangsan", 16);
-	Person per2;   /* �����޲ι��캯�� */
+	Person per2;   /* 调用无参构造函数 */
 	Person per3(); /* int fun(); */
 
 	Person *per4 = new Person;

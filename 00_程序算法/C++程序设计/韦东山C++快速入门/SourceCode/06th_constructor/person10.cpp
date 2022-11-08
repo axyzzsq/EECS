@@ -25,6 +25,7 @@ public:
 		this->work = NULL;
 	}
 
+	//如果程序提供了有参的构造函数,则系统不再提供无参的构造函数,必须自己添加无参构造函数,否则编译失败
 	Person(char *name, int age, char *work = "none") 
 	{
 		cout <<"Pserson(char*, int), name = "<<name<<", age= "<<age<<endl;

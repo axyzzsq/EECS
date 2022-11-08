@@ -74,7 +74,7 @@ public:
 int main(int argc, char **argv)
 {
 	Person per("zhangsan", 18);
-	Person per2(per);
+	Person per2(per); //程序中没有提供参数为Person的构造函数，则会调用默认拷贝构造函数
 
 	per2.printInfo();
 

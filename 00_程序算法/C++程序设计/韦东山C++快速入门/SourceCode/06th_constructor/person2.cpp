@@ -10,7 +10,11 @@ private:
 
 public:
 
-	Person() {cout <<"Pserson()"<<endl;}
+	Person() 
+	{
+		cout <<"Pserson()"<<endl;
+	}
+
 	Person(char *name) 
 	{
 		cout <<"Pserson(char *)"<<endl;
@@ -51,7 +55,7 @@ int main(int argc, char **argv)
 {
 	Person per("zhangsan", 16);
 	Person per2;   /* 调用无参构造函数 */
-	Person per3(); /* int fun(); */
+	Person per3(); /* int fun();仅仅是声明一个函数,没有发生调用 */
 
 	per.printInfo();
 	return 0;
