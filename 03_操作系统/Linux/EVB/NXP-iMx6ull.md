@@ -97,6 +97,19 @@ echo $CROSS_COMPILE
 arm-buildroot-linux-gnueabihf-gcc -v
 ```
 
+### 2.5 依赖路径查询
+
+```shell
+echo 'main(){}'| arm-buildroot-linux-gnueabihf-gcc -E -v -
+```
+
+> 用于解决的问题：
+>
+> - 编译时找不到头文件
+> - undefined reference to `xxx'，它表示 xxx 函数未定义
+>   - 方法一：写出函数
+>   - 方法二：链接到静态库或者动态库
+
 ## 3. 单独编译更新kernel + dtb 内核模块
 
 ### 3.1 编译内核镜像
