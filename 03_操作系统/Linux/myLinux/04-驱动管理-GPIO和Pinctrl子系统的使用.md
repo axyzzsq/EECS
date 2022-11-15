@@ -2,7 +2,7 @@
 
 [源码位置](https://github1s.com/axyzzsq/LinuxDriver/blob/main/05_gpio_and_pinctrl/01_led/leddrv.c)
 
- ![gpio子系统.drawio.png](https://github.com/axyzzsq/MyPicture/blob/main/pinctrl/gpio%E5%AD%90%E7%B3%BB%E7%BB%9F.drawio.png?raw=true)
+ ![](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/gpio子系统.drawio.png)
 
 ## Step1 使用配置工具生成节点代码
 
