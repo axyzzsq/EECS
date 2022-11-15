@@ -105,8 +105,8 @@ echo 'main(){}'| arm-buildroot-linux-gnueabihf-gcc -E -v -
 
 > 用于解决的问题：
 >
-> - 编译时找不到头文件
-> - undefined reference to `xxx'，它表示 xxx 函数未定义
+> - 编译时找不到头文件报错
+> - undefined reference to `xxx'，表示 xxx 函数未定义
 >   - 方法一：写出函数
 >   - 方法二：链接到静态库或者动态库
 
