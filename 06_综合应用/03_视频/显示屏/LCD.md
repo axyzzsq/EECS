@@ -14,3 +14,10 @@ LCD屏幕:
 
 [CSDN-BitBlt用法](https://blog.csdn.net/daichanglin/article/details/1676338?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166895288916800215017536%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166895288916800215017536&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-1676338-null-null.142^v65^opensearch_v2,201^v3^add_ask,213^v2^t3_control1&utm_term=BitBLT&spm=1018.2226.3001.4187)
 
+
+
+图像:
+
+[CSDN-位图](https://blog.csdn.net/fuhanghang/article/details/122956826?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166895337716800184111508%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166895337716800184111508&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-122956826-null-null.142^v65^opensearch_v2,201^v3^add_ask,213^v2^t3_control1&utm_term=%E4%BD%8D%E5%9B%BE&spm=1018.2226.3001.4187)
+
+[CSDN-矢量图和位图](https://blog.csdn.net/weixin_44745633/article/details/88833689?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166895345916782425685912%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166895345916782425685912&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-3-88833689-null-null.142^v65^opensearch_v2,201^v3^add_ask,213^v2^t3_control1&utm_term=%E7%9F%A2%E9%87%8F%E5%9B%BE&spm=1018.2226.3001.4187)
