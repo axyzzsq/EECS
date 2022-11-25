@@ -1,0 +1,391 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9D392BE124236240005E0828 /* librtmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D530F0824204BFE00E9FCB6 /* librtmp.dylib */; };
+		9D530EF4242048EF00E9FCB6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D530EF3242048EF00E9FCB6 /* AppDelegate.swift */; };
+		9D530EF6242048EF00E9FCB6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D530EF5242048EF00E9FCB6 /* ViewController.swift */; };
+		9D530EF8242048F000E9FCB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D530EF7242048F000E9FCB6 /* Assets.xcassets */; };
+		9D530EFB242048F000E9FCB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D530EF9242048F000E9FCB6 /* Main.storyboard */; };
+		9D530F0624204A6100E9FCB6 /* pushstream.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D530F0524204A6100E9FCB6 /* pushstream.c */; };
+		9D530F0B24204C3200E9FCB6 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D530F0A24204C3200E9FCB6 /* libssl.dylib */; };
+		9D530F0D24204C5700E9FCB6 /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D530F0C24204C5700E9FCB6 /* libz.1.2.8.tbd */; };
+		9D530F0F24204CD400E9FCB6 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D530F0E24204CD400E9FCB6 /* libcrypto.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9D530EF0242048EF00E9FCB6 /* PushStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PushStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D530EF3242048EF00E9FCB6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9D530EF5242048EF00E9FCB6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9D530EF7242048F000E9FCB6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9D530EFA242048F000E9FCB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9D530EFC242048F000E9FCB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D530EFD242048F000E9FCB6 /* PushStream.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushStream.entitlements; sourceTree = "<group>"; };
+		9D530F0324204A6000E9FCB6 /* PushStream-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PushStream-Bridging-Header.h"; sourceTree = "<group>"; };
+		9D530F0424204A6100E9FCB6 /* pushstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pushstream.h; sourceTree = "<group>"; };
+		9D530F0524204A6100E9FCB6 /* pushstream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pushstream.c; sourceTree = "<group>"; };
+		9D530F0824204BFE00E9FCB6 /* librtmp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = librtmp.dylib; path = "../../../../../usr/local/Cellar/rtmpdump/2.4+20151223/lib/librtmp.dylib"; sourceTree = "<group>"; };
+		9D530F0A24204C3200E9FCB6 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = "../../../../../usr/local/Cellar/openssl@1.1/1.1.1d/lib/libssl.dylib"; sourceTree = "<group>"; };
+		9D530F0C24204C5700E9FCB6 /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
+		9D530F0E24204CD400E9FCB6 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = "../../../../../usr/local/Cellar/openssl@1.1/1.1.1d/lib/libcrypto.dylib"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9D530EED242048EF00E9FCB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D530F0F24204CD400E9FCB6 /* libcrypto.dylib in Frameworks */,
+				9D392BE124236240005E0828 /* librtmp.dylib in Frameworks */,
+				9D530F0D24204C5700E9FCB6 /* libz.1.2.8.tbd in Frameworks */,
+				9D530F0B24204C3200E9FCB6 /* libssl.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9D530EE7242048EF00E9FCB6 = {
+			isa = PBXGroup;
+			children = (
+				9D530EF2242048EF00E9FCB6 /* PushStream */,
+				9D530EF1242048EF00E9FCB6 /* Products */,
+				9D530F0724204BFE00E9FCB6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9D530EF1242048EF00E9FCB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D530EF0242048EF00E9FCB6 /* PushStream.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D530EF2242048EF00E9FCB6 /* PushStream */ = {
+			isa = PBXGroup;
+			children = (
+				9D530F0524204A6100E9FCB6 /* pushstream.c */,
+				9D530F0424204A6100E9FCB6 /* pushstream.h */,
+				9D530EF3242048EF00E9FCB6 /* AppDelegate.swift */,
+				9D530EF5242048EF00E9FCB6 /* ViewController.swift */,
+				9D530EF7242048F000E9FCB6 /* Assets.xcassets */,
+				9D530EF9242048F000E9FCB6 /* Main.storyboard */,
+				9D530EFC242048F000E9FCB6 /* Info.plist */,
+				9D530EFD242048F000E9FCB6 /* PushStream.entitlements */,
+				9D530F0324204A6000E9FCB6 /* PushStream-Bridging-Header.h */,
+			);
+			path = PushStream;
+			sourceTree = "<group>";
+		};
+		9D530F0724204BFE00E9FCB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9D530F0E24204CD400E9FCB6 /* libcrypto.dylib */,
+				9D530F0C24204C5700E9FCB6 /* libz.1.2.8.tbd */,
+				9D530F0A24204C3200E9FCB6 /* libssl.dylib */,
+				9D530F0824204BFE00E9FCB6 /* librtmp.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9D530EEF242048EF00E9FCB6 /* PushStream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D530F00242048F000E9FCB6 /* Build configuration list for PBXNativeTarget "PushStream" */;
+			buildPhases = (
+				9D530EEC242048EF00E9FCB6 /* Sources */,
+				9D530EED242048EF00E9FCB6 /* Frameworks */,
+				9D530EEE242048EF00E9FCB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PushStream;
+			productName = PushStream;
+			productReference = 9D530EF0242048EF00E9FCB6 /* PushStream.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9D530EE8242048EF00E9FCB6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = lichao;
+				TargetAttributes = {
+					9D530EEF242048EF00E9FCB6 = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 9D530EEB242048EF00E9FCB6 /* Build configuration list for PBXProject "PushStream" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9D530EE7242048EF00E9FCB6;
+			productRefGroup = 9D530EF1242048EF00E9FCB6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9D530EEF242048EF00E9FCB6 /* PushStream */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9D530EEE242048EF00E9FCB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D530EF8242048F000E9FCB6 /* Assets.xcassets in Resources */,
+				9D530EFB242048F000E9FCB6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9D530EEC242048EF00E9FCB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D530F0624204A6100E9FCB6 /* pushstream.c in Sources */,
+				9D530EF6242048EF00E9FCB6 /* ViewController.swift in Sources */,
+				9D530EF4242048EF00E9FCB6 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9D530EF9242048F000E9FCB6 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D530EFA242048F000E9FCB6 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9D530EFE242048F000E9FCB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9D530EFF242048F000E9FCB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		9D530F01242048F000E9FCB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = DKJK2UTR58;
+				INFOPLIST_FILE = PushStream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/usr/local/Cellar/rtmpdump/2.4+20151223/lib",
+					"/usr/local/Cellar/openssl@1.1/1.1.1d/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = avdance.PushStream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PushStream/PushStream-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"/usr/local/Cellar/rtmpdump/2.4+20151223/include",
+					"/usr/local/Cellar/openssl@1.1/1.1.1d/include",
+				);
+			};
+			name = Debug;
+		};
+		9D530F02242048F000E9FCB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = DKJK2UTR58;
+				INFOPLIST_FILE = PushStream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/usr/local/Cellar/rtmpdump/2.4+20151223/lib",
+					"/usr/local/Cellar/openssl@1.1/1.1.1d/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = avdance.PushStream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PushStream/PushStream-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"/usr/local/Cellar/openssl@1.1/1.1.1d/include",
+					"/usr/local/Cellar/rtmpdump/2.4+20151223/include",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9D530EEB242048EF00E9FCB6 /* Build configuration list for PBXProject "PushStream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D530EFE242048F000E9FCB6 /* Debug */,
+				9D530EFF242048F000E9FCB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D530F00242048F000E9FCB6 /* Build configuration list for PBXNativeTarget "PushStream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D530F01242048F000E9FCB6 /* Debug */,
+				9D530F02242048F000E9FCB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9D530EE8242048EF00E9FCB6 /* Project object */;
+}
