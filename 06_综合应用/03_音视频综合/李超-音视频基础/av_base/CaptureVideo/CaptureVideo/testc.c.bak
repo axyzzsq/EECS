@@ -1,0 +1,116 @@
+//
+//  testc.c
+//  myapp
+//
+//  Created by lichao on 2020/1/30.
+//  Copyright © 2020年 lichao. All rights reserved.
+//
+
+#include "testc.h"
+#include <string.h>
+
+static int rec_status = 0;
+
+void set_status(int status){
+    rec_status = status;
+}
+
+//@brief
+//return
+static AVFormatContext* open_dev(){
+    
+    int ret = 0;
+    char errors[1024] = {0, };
+    
+    //ctx
+    AVFormatContext *fmt_ctx = NULL;
+    AVDictionary *options = NULL;
+    
+    //[[video device]:[audio device]]
+    char *devicename = "0";
+    
+    //register audio device
+    avdevice_register_all();
+    
+    //get format
+    AVInputFormat *iformat = av_find_input_format("avfoundation");
+    
+    enum AVPixelFormat av_fmt = AV_PIX_FMT_NV12;
+    av_dict_set(&options,"video_size","640x480",0);
+    av_dict_set(&options,"framerate","30",0);
+    av_dict_set(&options,"pixel_format","nv12", 0);
+    
+    
+    //open device
+    if((ret = avformat_open_input(&fmt_ctx, devicename, iformat, &options)) < 0 ){
+        av_strerror(ret, errors, 1024);
+        fprintf(stderr, "Failed to open audio device, [%d]%s\n", ret, errors);
+        return NULL;
+    }
+    
+    return fmt_ctx;
+}
+
+void rec_audio() {
+    
+    int ret = 0;
+    
+    AVFormatContext *fmt_ctx = NULL;
+    //AVCodecContext *c_ctx = NULL;
+    
+    //pakcet
+    AVPacket pkt;
+    
+    //set log level
+    av_log_set_level(AV_LOG_DEBUG);
+    
+    //start record
+    rec_status = 1;
+    
+    //create file
+    char *out = "/Users/lichao/Downloads/av_base/video.yuv";
+    FILE *outfile = fopen(out, "wb+");
+    
+    //打开设备
+    fmt_ctx = open_dev();
+
+    //read data from device
+    while((ret = av_read_frame(fmt_ctx, &pkt)) == 0 &&
+          rec_status) {
+        
+        av_log(NULL, AV_LOG_INFO,
+               "packet size is %d(%p)\n",
+               pkt.size, pkt.data);
+        
+       
+        //encode
+        //encode(c_ctx, frame, newpkt, outfile);
+        fwrite(pkt.data, 1, 460800, outfile); //614400
+        fflush(outfile);
+        //
+        av_packet_unref(&pkt); //release pkt
+    }
+  
+__ERROR:
+    if(outfile){
+        //close file
+        fclose(outfile);
+    }
+    
+    //close device and release ctx
+    if(fmt_ctx) {
+        avformat_close_input(&fmt_ctx);
+    }
+
+    av_log(NULL, AV_LOG_DEBUG, "finish!\n");
+    
+    return;
+}
+
+#if 0
+int main(int argc, char *argv[])
+{
+    rec_audio();
+    return 0;
+}
+#endif
