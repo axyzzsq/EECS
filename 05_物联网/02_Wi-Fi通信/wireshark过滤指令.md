@@ -31,11 +31,19 @@ tcp.dstport==80    #只过滤目的端口为80的包
 
 ![image-20221129114251115](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221129114251115.png)
 
+- 剔除某个协议的命令
+
+```shell
+not http
+```
+
+![image-20221129132253133](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221129132253133.png)
+
 ## Http过滤模式
 
 ```shell
-http.request.method=="GET"   #过滤get包
-http.request.method=="POST"  #过滤post包
+http.request.method=="GET"   #筛选出get包
+http.request.method=="POST"  #筛选出post包
 ```
 
 ![image-20221129114505921](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221129114505921.png)
@@ -50,3 +58,10 @@ ip.dst==222.79.77.161 and http
 
 ![image-20221129114733902](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221129114733902.png)
 
+
+
+
+
+参考：
+
+[wireshark 端口号过滤_Wireshark网络分析入门篇](https://blog.csdn.net/weixin_39715290/article/details/111226571?spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-111226571-blog-125846593.pc_relevant_3mothn_strategy_recovery&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-111226571-blog-125846593.pc_relevant_3mothn_strategy_recovery&utm_relevant_index=10)
