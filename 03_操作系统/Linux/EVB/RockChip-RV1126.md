@@ -54,7 +54,7 @@ source envsetup.sh
 Note:
 
 - Step1~Step3，只需要安装一次即可；
-- Step4~Step4，每在一个新终端上编译都需要执行一次。  
+- Step4~Step7，每在一个新终端上编译都需要执行一次。  
 
 ### 3、总体编译
 
