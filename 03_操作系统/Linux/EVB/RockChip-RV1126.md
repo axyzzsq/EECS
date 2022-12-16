@@ -191,7 +191,15 @@ mount -t nfs -o nolock,vers=3 192.168.123.39:/home/book/nfs_rootfs /mnt
 
 
 
+## Q&A
 
+### 1、进入烧录模式
 
+设备烧录需要进入MASKROM，但是插上USB之后，上位机发现的是ADB工具。
 
+![image-20221216205426351](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221216205426351.png)
+
+处理方法：
+
+点击切换；会切到MASKROM模式；
 
