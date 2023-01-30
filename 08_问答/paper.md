@@ -1,5 +1,9 @@
 # 问答
 
+[CSDN-【毕业季|进击的技术er】作为一名职场人，精心总结的嵌入式学习路线图](https://blog.csdn.net/dong__ge/article/details/125365471?spm=1001.2100.3001.7377&utm_medium=distribute.pc_feed_blog_category.none-task-blog-classify_tag-1-125365471-null-null.nonecase&depth_1-utm_source=distribute.pc_feed_blog_category.none-task-blog-classify_tag-1-125365471-null-null.nonecase)
+
+
+
 ## 一、外设
 
 ### 1、UART
