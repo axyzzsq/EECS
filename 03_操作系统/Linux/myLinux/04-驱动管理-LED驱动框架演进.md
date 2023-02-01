@@ -936,7 +936,7 @@ obj-m	+= 100ask_led.o
 
 ### 一、驱动框架
 
- ![img](https://raw.githubusercontent.com/axyzzsq/MyPicture/main/%E9%A9%B1%E5%8A%A8%E5%88%86%E5%B1%82%E5%88%86%E7%A6%BB.drawio.png)
+ ![image-20230113153145051](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230113153145051.png)
 
 ![image-20221025101256104](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20221025101256104.png)
 
