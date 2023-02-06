@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-//class指定public则默认为private
+//class指定public,否则默认为private
 class Person {
 private:
 	char *name;
