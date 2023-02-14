@@ -1,6 +1,61 @@
 # mmap
 
-例程
+![image-20230214202947912](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230214202947912.png)
+
+## 例程1
+
+mmap() 系统调用用于将文件或设备映射到内存中，以便可以使用读取和写入等内存访问操作来访问它们。它还可以用于分配可以在多个进程之间共享的匿名内存区域。以下是使用 mmap() 函数将文件映射到内存的示例用法：
+
+```c
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int main() {
+    int fd = open("file.txt", O_RDONLY);
+    if (fd == -1) {
+        printf("Error opening file.\n");
+        return -1;
+    }
+
+    off_t size = lseek(fd, 0, SEEK_END);
+    
+    /*
+    	NULL：此参数指定所需的内存映射起始地址。如果NULL通过，内核将自动选择一个合适的地址。
+    	size：此参数以字节为单位指定内存映射的大小。
+    	PROT_READ：此参数指定映射所需的内存保护。在这种情况下，PROT_READ表示映射应该是只读的。
+    	MAP_SHARED：此参数指定要创建的映射类型。在这种情况下，MAP_SHARED表示映射应该与也映射同一文件的其他进程共享。
+    	fd：此参数是要映射的文件的文件描述符。
+    	0：此参数指定文件中开始映射的偏移量。在这种情况下，0表示映射应从文件的开头开始。
+    */
+    char *addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+    
+    if (addr == MAP_FAILED) {
+        printf("Error mapping file.\n");
+        close(fd);
+        return -1;
+    }
+
+    printf("File contents: %s\n", addr);
+
+    if (munmap(addr, size) == -1) {
+        printf("Error unmapping file.\n");
+    }
+
+    close(fd);
+    return 0;
+}
+
+```
+
+此代码以只读模式打开名为“file.txt”的文件，并使用 lseek() 函数确定其大小。然后它使用具有 PROT_READ 权限和 MAP_SHARED 标志的 mmap() 将文件映射到内存，并打印映射内存的内容。最后，它使用 munmap() 取消映射内存区域并关闭文件。
+
+请注意，mmap() 返回的地址是指向映射内存区域起点的指针，可以像任何其他指针一样使用。但是，内存区域的大小必须是系统页面大小的倍数，地址也必须与页面大小对齐。
+
+
+
+## 例程2
 
 ```C
 #include <sys/types.h>
@@ -76,8 +131,6 @@ int main(int argc, char **argv)
 }
 ```
 
-
-
 - stat 
 
   - man stat
@@ -92,4 +145,4 @@ int main(int argc, char **argv)
   cat new2.c #可以看到程序被复制到到new2.c中
   ```
 
-  
+- 
