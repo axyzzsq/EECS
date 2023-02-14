@@ -1,4 +1,4 @@
-# mmap
+# 共享内存-mmap
 
 ![image-20230214202947912](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230214202947912.png)
 
@@ -145,6 +145,6 @@ int main(int argc, char **argv)
   cat new2.c #可以看到程序被复制到到new2.c中
   ```
 
-【】参考文献
+【参考文献】
 
 [共享内存](https://www.jianshu.com/p/096e1b58c678?u_atoken=41a3bca7-d07b-4551-93ff-79fb59a3f5ba&u_asession=012eBEsS3SrcAeCiZtKxSvnFrgo4VLAUv0mICexHWJJdviKiHBmLakAufMcwbqgjwZX0KNBwm7Lovlpxjd_P_q4JsKWYrT3W_NKPr8w6oU7K_YgnIbvQcQhnJVE_BnMOC5E3kHBSeC3ycZ3R-DrPYY52BkFo3NEHBv0PZUm6pbxQU&u_asig=05tEfbUPn5RoZXdCNUGkmmDaGElpOhZoOewMJAUo2FSJU3BESEuMcjXmDTPkY2bH8JYhLZv5b7gGZMtT9VkJeSS-xHyDwGKoOS8hZMb3ranQZG79wHrN_cAupsh7vVQNmpSS6PKQvJvPz4weuO3fy8bwFMwudA4smgzRdjQ_5THXP9JS7q8ZD7Xtz2Ly-b0kmuyAKRFSVJkkdwVUnyHAIJzWHbBlYOnd5BY7GRQyyMeVzBStTJBcUTS8XSwVi9X-uMWrnxlgSSvoRYzeD7jclHWe3h9VXwMyh6PgyDIVSG1W8f_aWkwfbzL9ulnt7JbBelxPV46rxeunwwnCjSohRo2NvyeaX3fHnDH19A_oh0u2WbZLBp6JY2UOjS4PtvZ7YPmWspDxyAEEo4kbsryBKb9Q&u_aref=pyCPYM6xbnmxvtynjLNgd%2FyCU7c%3D)
