@@ -4,6 +4,8 @@
 
 ![image-20230216235805479](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230216235805479.png)
 
+##  2、Analysis
+
 ```shell
 U-Boot 2017.03-g8ba4c5bb19 (Jul 03 2022 - 05:34:19 -0400) # 此行显示 U-Boot 的版本号，以及构建日期和时间。
 
