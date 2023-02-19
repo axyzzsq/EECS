@@ -7,4 +7,10 @@
 - [ ] kernel启动横向对比
 - [ ] 分析韦东山通用Makefile模板
 - [ ] 分析SF1设备脚本
+  - [ ] update
+  - [ ] connect wifi
+  - [ ] research who call the shell script?
 - [ ] SDK install 打包问题
+- [ ] FFmpeg-ALSA采集音频流Demo
+- [ ] GStreamer-V4L2
+- [ ] GStreamer-ALSA
