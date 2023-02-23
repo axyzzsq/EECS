@@ -23,7 +23,7 @@ To use this Makefile, you can run the `make` command in the same directory as th
 
 
 
-## The different between `S^`and `S<`
+## The difference between `S^`and `S<`
 
 In a Makefile, `$^` and `$<` are special variables that are used to represent the dependencies of a target.
 
