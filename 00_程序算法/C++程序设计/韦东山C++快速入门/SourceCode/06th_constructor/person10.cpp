@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// 构造顺序 
+
 class Person {
 private:
 	char *name;

@@ -18,7 +18,7 @@ public:
 	}
 	Person(char *name) 
 	{
-		//在构造函数中申�?�内存存放参�?
+		//在构造函数申请内存来存放参数
 		cout <<"Pserson(char *)"<<endl;
 		this->name = new char[strlen(name) + 1];
 		strcpy(this->name, name);
@@ -61,7 +61,7 @@ public:
 int main(int argc, char **argv)
 {
 	Person per("zhangsan", 16);
-	Person per2;   /* �����޲ι��캯�� */
+	Person per2;   /* �����޲ι��캯�� */
 	Person per3(); /* int fun(); */
 
 	Person *per4 = new Person;
