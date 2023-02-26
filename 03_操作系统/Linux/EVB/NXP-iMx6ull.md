@@ -103,6 +103,13 @@ arm-buildroot-linux-gnueabihf-gcc -v
 echo 'main(){}'| arm-buildroot-linux-gnueabihf-gcc -E -v -
 ```
 
+> 命令解析：
+>
+> - 编译一个空的main函数，回显编译器的信息
+> - -E表示只预处理，不生成目标文件和可执行文件
+> - -v表示显示编译器的版本信息和详细的命令行参数
+> - 最后的-表示从标准输入读取源代码
+>
 > 用于解决的问题：
 >
 > - 编译时找不到头文件报错
