@@ -198,7 +198,7 @@ Person *pers = new Person[10]; delete[] pers;
 - 成员函数声明后面，加上const
 
   ```c++
-  void printInfo(void) const;  //表示此函数没有修改操作
+  void printInfo(void) const;  //表示此函数没有修改操作，只是单纯地读取
   ```
 
 - const对象只能调用const成员函数
