@@ -15,3 +15,4 @@
 - [ ] GStreamer-V4L2
 - [ ] GStreamer-ALSA
 - [ ] C++小工程学习音视频/C++
+- [ ] 字符串API的汇总和实现
