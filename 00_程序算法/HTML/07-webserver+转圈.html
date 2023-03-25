@@ -1,0 +1,71 @@
+<head>
+  <style>
+    .loader {
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="dropdown">
+  <button onclick="scanWifi()" class="dropbtn">请扫描Wi-Fi</button>
+  <div id="myDropdown" class="dropdown-content"></div>
+</div>
+<script>
+function scanWifi() {
+  // 显示一个加载动画
+  document.getElementById("myDropdown").innerHTML = "<div class='loader'></div>";
+  // 创建一个XMLHttpRequest对象
+  var xhr = new XMLHttpRequest();
+  // 设置请求方法和URL
+  xhr.open("GET", "http://your-router-ip/scan-wifi");
+  // 定义响应事件处理函数
+  xhr.onload = function() {
+    if (xhr.status == 200) {
+      // 如果响应成功，解析返回的JSON数据
+      var data = JSON.parse(xhr.responseText);
+      // 创建一个列表元素
+      var list = document.createElement("ul");
+      // 遍历数据中的每个SSID，并添加到列表中
+      for (var i = 0; i < data.length; i++) {
+        var item = document.createElement("li");
+        item.textContent = data[i].ssid;
+        list.appendChild(item);
+      }
+      // 替换掉加载动画，显示列表元素
+      document.getElementById("myDropdown").innerHTML = "";
+      document.getElementById("myDropdown").appendChild(list);
+    } else {
+      // 如果响应失败，显示错误信息
+      document.getElementById("myDropdown").innerHTML = "扫描失败，请重试。";
+    }
+	  };
+  
+  // 发送请求
+  xhr.send();
+  
+  // 设置一个本地定时器，20秒后执行
+  setTimeout(function() {
+    // 检查请求是否完成
+    if (xhr.readyState != 4) {
+      // 如果没有完成，取消请求
+      xhr.abort();
+      // 显示超时提醒
+      alert("没有扫描到可以接入的Wi-Fi");
+      document.getElementById("myDropdown").innerHTML = "";
+    }
+  }, 20000);
+}
+</script>
+</body>
+</script>
+</body>
