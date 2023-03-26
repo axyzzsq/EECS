@@ -47,8 +47,6 @@ source envsetup.sh
 
 #Step7: 这时会出现很多选项， 输入“2” 来选择BoardConfig-38x38-spinand.mk
 
-
-
 ```
 
 Note:
@@ -151,13 +149,19 @@ make savedefconfig
 
 
 
+#### Trouble Shooting
 
+- 报错：
 
-## 二、烧录和分区
+![image-20230326154131172](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230326154131172.png)
 
+- 解决办法： 执行
 
+  ```shell
+  export  LD_LIBRARY_PATH=
+  ```
 
-
+这条指令的作用是将环境变量`LD_LIBRARY_PATH`设置为空，即清空该环境变量的值。这个环境变量是用来指定动态链接库的搜索路径的，当我们运行一个程序时，系统会根据该环境变量的值去搜索动态链接库。如果该环境变量的值为空，则系统会使用默认的搜索路径去查找动态链接库。然后重新执行`build.sh`。
 
 ## 三、应用
 
@@ -191,7 +195,7 @@ mount -t nfs -o nolock,vers=3 192.168.123.39:/home/book/nfs_rootfs /mnt
 
 
 
-## Q&A
+## Trouble Shooting
 
 ### 1、进入烧录模式
 
@@ -201,5 +205,5 @@ mount -t nfs -o nolock,vers=3 192.168.123.39:/home/book/nfs_rootfs /mnt
 
 处理方法：
 
-点击切换；会切到MASKROM模式；
+点击切换；会切到LOADER模式,再进入高级功能，点击切换进入MASKROM。
 
