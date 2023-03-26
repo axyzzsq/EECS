@@ -2,6 +2,14 @@
 
 # 瑞芯微-RV1126芯片开发指令
 
+## 挂载
+
+```shell
+mount -t nfs -o nolock 192.168.31.177:/home/book/nfs_rootfs /mnt/nfs
+```
+
+
+
 ## 一、编译
 
 ### 1、代码仓管理
