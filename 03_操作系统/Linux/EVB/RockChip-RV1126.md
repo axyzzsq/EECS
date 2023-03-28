@@ -118,7 +118,7 @@ cp defconfig arch/arm/configs/rv1126_defconfig
 在工程目录下执行：
 
 ```shell
-/build.sh kernel
+./build.sh kernel
 ```
 
 #### (3) Rootfs 编译
