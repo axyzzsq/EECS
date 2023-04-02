@@ -6,7 +6,7 @@
 
 ```shell
 mount -t nfs -o nolock 192.168.31.177:/home/book/nfs_rootfs /mnt/nfs
-mount -t nfs -o nolock 192.168.43.219:/home/book/nfs_rootfs /mnt/nfs
+mount -t nfs -o nolock 192.168.1.106:/home/book/nfs_rootfs /mnt/nfs
 ```
 
 
