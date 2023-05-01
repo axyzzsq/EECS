@@ -54,12 +54,12 @@ int main(int argc, char **argv)
 {
 	Person per("zhangsan", 16);
 	Person per2;   /* 调用无参构造函数  */
-	Person per3(); /* int fun(); */
+	Person per3(); /* int fun(); 不会调用构造函数 */
 
 	Person *per4 = new Person;  /* 调用无参构造函数  */
 	Person *per5 = new Person();/* 也是调用无参构造函数  */
 
-	Person *per6 = new Person[2];
+	Person *per6 = new Person[2];  //调用两次构造函数
 
 	Person *per7 = new Person("lisi", 18, "student");
 	Person *per8 = new Person("wangwu", 18);
