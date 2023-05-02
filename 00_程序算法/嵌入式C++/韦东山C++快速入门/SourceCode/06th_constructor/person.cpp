@@ -51,7 +51,7 @@ public:
 int main(int argc, char **argv)
 {
 	Person per("zhangsan", 16);
-	Person per2;
+	Person per2; //调用默认构造函数
 
 	per.printInfo();
 	

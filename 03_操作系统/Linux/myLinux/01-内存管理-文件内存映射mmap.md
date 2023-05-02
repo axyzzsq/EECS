@@ -1,4 +1,4 @@
-# 共享内存-mmap
+# 内存映射-mmap
 
 ![image-20230214202947912](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230214202947912.png)
 

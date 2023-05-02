@@ -18,8 +18,16 @@ public:
 	}
 	Person(char *name) 
 	{
-		//鍦ㄦ瀯閫犲嚱鏁扮敵璇峰唴瀛樻潵瀛樻斁鍙傛暟
+		//在构造函数申请内存来存放参数
 		cout <<"Pserson(char *)"<<endl;
+
+		/*这行代码的作用是在堆上为对象的name成员变量分配内存空间，
+		并将其指针赋值给this->name。其中，strlen(name) + 1是为了
+		保证能够存储name字符串以及字符串结尾的'\0'字符。使用new关键字
+		可以动态地在堆上分配内存空间，而不是在栈上分配，从而避免了
+		栈溢出的问题。需要注意的是，在使用完这段内存空间后，需要
+		使用delete关键字手动释放内存，否则会导致内存泄漏。*/
+		
 		this->name = new char[strlen(name) + 1];
 		strcpy(this->name, name);
 	}
@@ -61,7 +69,7 @@ public:
 int main(int argc, char **argv)
 {
 	Person per("zhangsan", 16);
-	Person per2;   /* 锟斤拷锟斤拷锟睫参癸拷锟届函锟斤拷 */
+	Person per2;   /* 调用无参构造函数 */
 	Person per3(); /* int fun(); */
 
 	Person *per4 = new Person;
