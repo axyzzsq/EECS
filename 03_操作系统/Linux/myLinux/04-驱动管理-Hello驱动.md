@@ -258,7 +258,7 @@ MODULE_LICENSE("GPL");
 ```
 
 - 在应用层调用glibc的`write`的时候会把数据内存传递给驱动层的`copy_from_user`的`const char __user *buf`，再由`__user`修饰的内存段把数据拷贝给在驱动层定义的数组，这样数据才能从应用层传给驱动层；
-- 反向传输数据也是一样；由`copy_from_user`的一个参数提供内存段来转递数据
+- 反向传输数据也是一样；由`copy_from_user`的一个参数提供内存段来转递数据。
 
 ### 2、应用
 
