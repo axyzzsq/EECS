@@ -7,7 +7,7 @@ using namespace std;
 
 class Person {
 private:
-	static int cnt;
+	static int cnt; /* ÉùÃ÷,Î´·ÖÅä¿Õ¼ä */
 	char *name;
 	int age;
 	char *work;
@@ -15,7 +15,7 @@ private:
 public:
 
 	static int getCount(void) 
-	{ 
+	{
 		return cnt; 
 	}
 

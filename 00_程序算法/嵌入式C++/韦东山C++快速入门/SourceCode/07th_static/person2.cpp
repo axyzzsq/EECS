@@ -14,7 +14,7 @@ private:
 
 public:
 
-	static int getCount(void); 
+	static int getCount(void); /* 在类内声明,类外实现 */
 
 	Person() {//cout <<"Pserson()"<<endl;
 		name = NULL;
