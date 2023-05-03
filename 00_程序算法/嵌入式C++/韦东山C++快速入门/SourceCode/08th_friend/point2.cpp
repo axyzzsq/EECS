@@ -21,7 +21,7 @@ public:
 	{
 		cout<<"("<<x<<", "<<y<<")"<<endl;
 	}
-	friend Point add(Point &p1, Point &p2);
+	friend Point add(Point &p1, Point &p2); //ÉèÖÃÅóÓÑÊôĞÔ
 };
 
 Point add(Point &p1, Point &p2)
