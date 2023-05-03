@@ -102,8 +102,10 @@ Person per; //Person是类型, per是对象
 ### 9、new和delete
 
 ```c++
-Person *p = new Person();         delete p;
-Person *pers = new Person[10]; delete[] pers;
+Person *p = new Person();         
+delete p;
+Person *pers = new Person[10]; 
+delete []pers;
 ```
 
 ### 9、静态成员
