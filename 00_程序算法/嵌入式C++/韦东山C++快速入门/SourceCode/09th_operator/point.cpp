@@ -33,6 +33,7 @@ Point add(Point &p1, Point &p2)
 	return n;
 }
 
+//重载+号
 Point operator+(Point &p1, Point &p2)
 {
 	cout<<"Point operator+(Point &p1, Point &p2)"<<endl;
