@@ -84,6 +84,7 @@ Point operator++(Point &p, int a)
 
 ostream& operator<<(ostream &o, Point p)
 {
+	cout<<"into operator<<"<<endl;
 	cout<<"("<<p.x<<", "<<p.y<<")";
 	return o;
 }
