@@ -43,7 +43,7 @@ public:
 		cnt++;
 	}
 
-	Person(const Person &per) 
+	Person(const Person &per)  // 拷贝构造函数必加const,加const后，只能调用const成员函数
 	{
 		cout <<"Pserson(Person &)"<<endl;
 		this->age = per.age;
@@ -83,18 +83,21 @@ public:
 		age = a;
 		return 0;
 	}
-	void printInfo(void) const
+	void printInfo(void) const //const成员函数,const对象只能调用const成员函数
 	{
 		//printf("name = %s, age = %d, work = %s\n", name, age, work); 
 		cout<<"name = "<<name<<", age = "<<age<<", work = "<<work<<endl;
 	}
-
+	
+	
 	Person& operator=(const Person& p)
 	{
 		cout << "operator=(const Person& p)"<<endl;
-	
+
+		// p = p
 		if (this == &p)
-			return *this;
+			return *this; // 返回当前对象的引用
+			
 		this->age = p.age;
 
 		if (this->name) {
@@ -103,20 +106,21 @@ public:
 		if (this->work) {
 			delete this->work;
 		}
-
+		
+		//apply for new memory and copy data
 		this->name = new char[strlen(p.name) + 1];
 		strcpy(this->name, p.name);
 		
 		this->work = new char[strlen(p.work) + 1];
 		strcpy(this->work, p.work);
 
-		return *this;
+		return *this; // 返回当前对象的引用
 		
 	}
 	
 };
 
-int Person::cnt = 0; /* 定义和初始化 */
+int Person::cnt = 0; /* 锟斤拷锟斤拷统锟绞硷拷锟?? */
 
 int Person::getCount(void) 
 { 
@@ -129,18 +133,16 @@ int main(int argc, char **argv)
 	const Person p1("zhangsan", 10);
 
 	cout<<"Person p2 = p1" <<endl;
-	Person p2 = p1;
+	Person p2 = p1; //调用拷贝构造函数
 	
 	Person p3;
 
 	cout<<"p3=p1"<<endl;
-	p3 = p1;
+	p3 = p1;  //调用重载=操作符函数
 	cout<<"end"<<endl;
 	p1.printInfo();
 	p2.printInfo();
 	p3.printInfo();
-
-	
 
 	return 0;
 }
