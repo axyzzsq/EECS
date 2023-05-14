@@ -120,7 +120,7 @@ public:
 	
 };
 
-int Person::cnt = 0; /* ����ͳ�ʼ��?? */
+int Person::cnt = 0;
 
 int Person::getCount(void) 
 { 
