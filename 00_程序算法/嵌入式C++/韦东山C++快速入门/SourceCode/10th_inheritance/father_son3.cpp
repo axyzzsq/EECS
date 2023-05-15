@@ -34,9 +34,10 @@ private:
 	int toy;
 	//using Father::it_skill;
 public:
-	using Father::room_key;
+	using Father::room_key; //调整访问权限，使得子类可以访问父类的protected成员
 	//using Father::money;
-	
+	//子类能调整的是父类的protected成员，而不能调整父类的private成员
+	//只能调它看得见的基类成员，不能调它看不见的基类成员
 	void play_game(void)
 	{
 		int m;
