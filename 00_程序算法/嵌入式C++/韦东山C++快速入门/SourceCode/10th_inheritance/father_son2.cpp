@@ -50,9 +50,10 @@ public:
 		m--;
 		setMoney(m);
 
-		/* 外人不能拿父亲的房间钥匙
-		 * 儿子可以
-		 */
+		/*子类可以直接访问父类的保护成员
+		 * 但是不能直接访问父类的私有成员
+		 * 而其他类则不能访问子类的保护成员
+		*/
 		room_key = 1; 
 	}
 };
@@ -68,6 +69,7 @@ int main(int argc, char **argv)
 	s.it_skill();
 	s.play_game();
 
+	//其他代码不能访问子类的保护成员
 	//s.room_key = 1;
 	
 	return 0;
