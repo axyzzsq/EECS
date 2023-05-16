@@ -133,8 +133,8 @@ class Grandson_pri : public Son_pri {
 
 public:
 	void test(void) {
-		//room_key = 1;  // error
-		//address  = 2;  // error
+		//room_key = 1;  //room_key is private
+		//address  = 2;  //address is private
 	}
 };
 
@@ -155,10 +155,10 @@ int main(int argc, char **argv)
 	//s_pri.it_skill();	 // error
 
 	Grandson_pub gs_pub;
-	Grandson_pro gs_pro;
+	Grandson_pro gs_pro; 
 
 	gs_pub.address = 2;
-	//gs_pro.address = 2;  // error
+	//gs_pro.address = 2;  //address is protected
 
 	return 0;
 }
