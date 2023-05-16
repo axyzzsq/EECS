@@ -104,14 +104,15 @@ int main(int argc, char **argv)
 
 	test_func(p);
 
-	/* test_func(s); 调用了 test_func 函数，并将 s 作为参数传递给它。
-	test_func 函数的参数是一个 Person 类型的引用，因此 s 会被隐式转
-	换为 Person 类型。在函数内部，p.printInfo() 调用了 Person 类的 
-	printInfo 函数，因为 p 是一个 Person 类型的引用。由于 Student 类
-	继承自 Person 类，因此 s 对象也具有 printInfo 函数。在 main 函数的
-	结尾，s.printInfo() 被调用，这将调用 Student 类的 printInfo 函数，
-	该函数首先调用 Person 类的 printInfo 函数，然后输出 Student 类的信息。*/
-	
+	/*  test_func(s); 调用了 test_func 函数，并将 s 作为参数传递给它。
+	 *  test_func 函数的参数是一个 Person 类型的引用，因此 s 会被隐式转
+	 *  换为 Person 类型。在函数内部，p.printInfo() 调用了 Person 类的 
+	 *  printInfo 函数，因为 p 是一个 Person 类型的引用。由于 Student 类
+	 *  继承自 Person 类，因此 s 对象也具有 printInfo 函数。在 main 函数的
+	 *  结尾，s.printInfo() 被调用，这将调用 Student 类的 printInfo 函数，
+	 *  该函数首先调用 Person 类的 printInfo 函数，然后输出 Student 类的信息。
+	 * */
+
 	test_func(s);  /* Person &p = s里面的Person部分;
 	               * p引用的是"s里面的Person部分"
 	               */
