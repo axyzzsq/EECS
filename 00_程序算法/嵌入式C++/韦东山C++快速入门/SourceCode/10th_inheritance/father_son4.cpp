@@ -118,14 +118,14 @@ int main(int argc, char **argv)
 	Son_pro s_pro;
 	Son_pri s_pri;
 
-	s_pub.play_game();
-	s_pro.play_game();
+	s_pub.play_game(); //play_game是public成员，所以可以在main函数中访问
+	s_pro.play_game(); 
 	s_pri.play_game();
 
 
 	s_pub.it_skill();
-	//s_pro.it_skill();  // error
-	//s_pri.it_skill();	 // error
+	//s_pro.it_skill();  //父类的protected成员在子类中变成了protected成员，所以不能在main函数中访问
+	//s_pri.it_skill();
 
 	return 0;
 }
