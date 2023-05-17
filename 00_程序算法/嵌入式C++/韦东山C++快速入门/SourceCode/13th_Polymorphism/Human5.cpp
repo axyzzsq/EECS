@@ -4,41 +4,72 @@
 
 using namespace std;
 
-class Human {
+// 这个程序是为了说明，如果子类覆写了父类的虚函数，但是返回值不同，也是可以的
+class Human
+{
 private:
 	int a;
+
 public:
-	virtual void eating(void) { cout<<"use hand to eat"<<endl; }
-	virtual ~Human() { cout<<"~Human()"<<endl; }
-	virtual void test(void) {cout<<"Human's test"<<endl; }
+	virtual void eating(void)
+	{
+		cout << "use hand to eat" << endl;
+	}
+	virtual ~Human()
+	{
+		cout << "~Human()" << endl;
+	}
+	virtual void test(void)
+	{
+		cout << "Human's test" << endl;
+	}
 };
 
-class Englishman : public Human {
+class Englishman : public Human
+{
 public:
-	void eating(void) { cout<<"use knife to eat"<<endl; }
-	virtual ~Englishman() { cout<<"~Englishman()"<<endl; }
-	virtual int test(void) {cout<<"Englishman's test"<<endl; return 1; }
+	void eating(void)
+	{
+		cout << "use knife to eat" << endl;
+	}
+	virtual ~Englishman()
+	{
+		cout << "~Englishman()" << endl;
+	}
+	virtual int test(void)
+	{
+		cout << "Englishman's test" << endl;
+		return 1;
+	}
 };
 
-
-class Chinese : public Human {
+class Chinese : public Human
+{
 public:
-	void eating(void) { cout<<"use chopsticks to eat"<<endl; }
-	virtual ~Chinese() { cout<<"~Chinese()"<<endl; }
-	virtual int test(void) {cout<<"Chinese's test"<<endl; return 1; }
+	void eating(void)
+	{
+		cout << "use chopsticks to eat" << endl;
+	}
+	virtual ~Chinese()
+	{
+		cout << "~Chinese()" << endl;
+	}
+	virtual int test(void)
+	{
+		cout << "Chinese's test" << endl;
+		return 1;
+	}
 };
 
-void test_eating(Human& h)
+void test_eating(Human &h)
 {
 	h.eating();
 }
 
-void test_return(Human& h)
+void test_return(Human &h)
 {
 	h.test();
 }
-
-
 
 int main(int argc, char **argv)
 {
@@ -50,8 +81,5 @@ int main(int argc, char **argv)
 	test_return(e);
 	test_return(c);
 
-
 	return 0;
 }
-
-

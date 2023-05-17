@@ -4,24 +4,37 @@
 
 using namespace std;
 
-class Human {
+class Human
+{
 private:
 	int a;
+
 public:
-	virtual void eating(void) { cout<<"use hand to eat"<<endl; }
+	virtual void eating(void)
+	{
+		cout << "use hand to eat" << endl;
+	}
 };
 
-class Englishman : public Human {
+class Englishman : public Human
+{
 public:
-	void eating(void) { cout<<"use knife to eat"<<endl; }
+	void eating(void)
+	{
+		cout << "use knife to eat" << endl;
+	}
 };
 
-
-class Chinese : public Human {
+class Chinese : public Human
+{
 public:
-	void eating(void) { cout<<"use chopsticks to eat"<<endl; }
+	void eating(void)
+	{
+		cout << "use chopsticks to eat" << endl;
+	}
 };
 
+//传入Human类的值则无法实现多态
 void test_eating(Human h)
 {
 	h.eating();
@@ -37,11 +50,9 @@ int main(int argc, char **argv)
 	test_eating(e);
 	test_eating(c);
 
-	cout<<"sizeof(Human) = "<<sizeof(h)<<endl;
-	cout<<"sizeof(Englishman) = "<<sizeof(e)<<endl;
-	cout<<"sizeof(Chinese) = "<<sizeof(c)<<endl;
+	cout << "sizeof(Human) = " << sizeof(h) << endl;
+	cout << "sizeof(Englishman) = " << sizeof(e) << endl;
+	cout << "sizeof(Chinese) = " << sizeof(c) << endl;
 
 	return 0;
 }
-
-
