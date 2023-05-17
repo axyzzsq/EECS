@@ -71,6 +71,7 @@ private:
 
 public:
 	LeftRightSofabed() { cout <<"LeftRightSofabed()"<<endl; }
+	//表示调用父类的构造函数，如果父类有多个构造函数，需要指定调用哪个构造函数
 	LeftRightSofabed(char *str1, char *str2, char *str3) : Sofabed(str1), LeftRightCom(str2), date(str3) { cout <<"LeftRightSofabed()"<<endl; }
 	
 };
