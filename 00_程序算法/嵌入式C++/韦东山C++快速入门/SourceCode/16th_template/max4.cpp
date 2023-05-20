@@ -49,6 +49,8 @@ int main(int argc, char **argv)
 	char b2[]="cd";
 
 	//mymax(a2, b2);  /* mymax(char[4], char[3]), 无法推导出T: mymax(char& [4], char& [3]), 因为两个参数类型不一样 */
+	
+	//数组在这个模板里面可以隐式转换成指针
 	mymax2(a2, b2);   /* mymax2(char[4], char[3]), 推导: mymax2(const char *, const char *); */
 
 	return 0;
