@@ -26,7 +26,7 @@ Englishman::Englishman(char *name, int age, char *address)
 {
 	setName(name);
 	this->age = age;
-	memset(this->address, 0, 100);
+	memset(this->address, 0, 1000);
 	strcpy(this->address, address);
 }
 

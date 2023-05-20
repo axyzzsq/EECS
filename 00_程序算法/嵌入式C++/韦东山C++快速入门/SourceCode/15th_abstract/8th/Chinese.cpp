@@ -22,8 +22,10 @@ Chinese::~Chinese()
 	cout<<"~Chinese()"<<endl; 
 }
 
+//工厂函数
 Human& CreateChinese(char *name, int age, char *address)
 {
+	//使用*操作符解引用这个指针，得到一个Chinese对象的引用，然后返回这个引用。
 	return *(new Chinese());
 }
 

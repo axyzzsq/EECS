@@ -22,6 +22,7 @@ public:
 	
 };
 
+
 Human& CreateEnglishman(char *name, int age, char *address);
 Human& CreateChinese(char *name, int age, char *address);
 

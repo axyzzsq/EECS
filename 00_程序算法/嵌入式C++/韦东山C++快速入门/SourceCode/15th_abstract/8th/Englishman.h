@@ -12,7 +12,7 @@ using namespace std;
 
 class Englishman : public Human {
 private:
-	char address[100];
+	char address[1000];
 	int age;
 public:
 	void eating(void);
