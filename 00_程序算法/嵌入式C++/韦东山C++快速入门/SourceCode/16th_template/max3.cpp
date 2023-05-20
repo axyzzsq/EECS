@@ -22,7 +22,7 @@ float& max(float& a, float& b)
 */
 
 template<typename T>
-const T& mymax(const T& a, const T& b)
+const T& mymax( T& a, const T& b)
 {
 	cout<<__PRETTY_FUNCTION__<<endl;
 	return (a < b)? b : a;
@@ -31,8 +31,8 @@ const T& mymax(const T& a, const T& b)
 
 int main(int argc, char **argv)
 {
-	int ia = 1;
-	int ib = 2;
+	const int ia = 1;
+	const int ib = 2;
 	
 
 	mymax(ia, ib);
