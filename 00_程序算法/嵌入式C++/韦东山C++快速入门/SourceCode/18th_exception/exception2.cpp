@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	//将字符串转换成无符号长整型
 	i = strtoul(argv[1], NULL, 0);
 
 	A(i);

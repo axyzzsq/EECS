@@ -56,10 +56,10 @@ void A(int i)
 	} catch (double d)
 	{
 		cout<<"catch double exception "<<d<<endl;
-	} catch (MySubException &e)
+	} catch (MySubException &e) // catch MySubException first,否则会被MyException捕获子类抛出的异常
 	{
 		e.what();
-	} catch (MyException &e)
+	} catch (MyException &e) // catch MyException second
 	{
 		e.what();
 	} catch (...){
