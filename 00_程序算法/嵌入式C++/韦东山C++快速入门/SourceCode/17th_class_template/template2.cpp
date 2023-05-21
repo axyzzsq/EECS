@@ -17,7 +17,8 @@ public:
 template<typename T> void AAA<T>::test_func(const T &t)
 {
 	this->t = t;
-}
+}
+
 
 template<typename T>
 void AAA<T>::print(void)
@@ -25,7 +26,8 @@ void AAA<T>::print(void)
 	cout<<t<<endl;
 }
 
-
+//定做一个特殊的类模板,只能用于int类型
+//定做特殊模板类是为了解决特殊问题，比如某个类型的数据需要特殊处理，而其他类型的数据不需要特殊处理
 template<>
 class AAA<int> {
 public:
