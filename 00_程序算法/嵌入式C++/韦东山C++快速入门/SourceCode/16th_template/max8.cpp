@@ -4,23 +4,6 @@
 
 using namespace std;
 
-/*
-int& max(int& a, int& b)
-{
-	return (a < b)? b : a;
-}
-
-double& max(double& a, double& b)
-{
-	return (a < b)? b : a;
-}
-
-float& max(float& a, float& b)
-{
-	return (a < b)? b : a;
-}
-*/
-
 template<typename T>
 const T& mymax(const T& a, const T& b)
 {
@@ -51,7 +34,8 @@ int main(int argc, char **argv)
 
 	int *p1=&ia;
 	int *p2=&ib;
-
+	
+	
 	cout<<mymax(p1, p2)<<endl;
 
 	return 0;

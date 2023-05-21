@@ -4,23 +4,6 @@
 
 using namespace std;
 
-/*
-int& max(int& a, int& b)
-{
-	return (a < b)? b : a;
-}
-
-double& max(double& a, double& b)
-{
-	return (a < b)? b : a;
-}
-
-float& max(float& a, float& b)
-{
-	return (a < b)? b : a;
-}
-*/
-
 template<typename T>
 const T& mymax(const T& a, const T& b)
 {
@@ -35,6 +18,7 @@ const T& mymax(T& a, T& b)
 	return (a < b)? b : a;
 }
 
+//重载成指针版本，传入的是指针，比较的是指针所指向的值
 template<typename T>
 const T mymax(T * a, T* b)
 {
