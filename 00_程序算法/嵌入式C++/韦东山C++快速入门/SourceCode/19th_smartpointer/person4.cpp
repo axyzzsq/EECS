@@ -74,14 +74,15 @@ int main(int argc, char **argv)
 {	
 	int i;
 
-	/* Ïàµ±ÓÚ:
+	/* ç›¸å½“äºŽï¼š
 	 * 1. Person *p = new Person();
-	 * 2. sp tmp(p);  ==> sp(Person *other)
+	 * 2. sp tmp(p);  ==>
+	 * sp(Person *other)
 	 * 3.
 	 * 3.1 sp other(tmp);  ==> sp(sp &other2)
-	       ÎÊÌâÔÚÓÚ: sp &other2 = tmp; // ´íÎóÓï·¨
-	                 const sp& other2 = tmp; //ok
-	 * »ò
+	       é—®é¢˜åœ¨äºŽï¼š sp &other2 = tmp; // é”™è¯¯è¯­æ³•ï¼Œå¼•ç”¨ä¸èƒ½æŒ‡å‘ä¸´æ—¶å˜é‡
+	       æ”¹æˆï¼š     const sp& other2 = tmp; //ok
+	 * æˆ–è€…ï¼š
 	 * 3.2 sp other(tmp ==> Person*);  ==>sp(Person *other)
 	 */
 	

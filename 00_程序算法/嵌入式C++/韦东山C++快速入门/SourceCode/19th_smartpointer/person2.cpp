@@ -27,7 +27,7 @@ public:
 void test_func(void)
 {
 	//Person *p = new Person();
-	Person per;
+	Person per; // 局部变量，用栈对象代替堆对象，当函数结束时，自动调用析构函数
 	per.printInfo();
 }
 

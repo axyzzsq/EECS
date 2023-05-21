@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 {	
 	int i;
 
-	sp other = new Person();
+	sp other = new Person(); 
 
 	for (i = 0; i < 2; i++)
 		test_func(other);

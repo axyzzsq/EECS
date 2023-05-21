@@ -101,10 +101,10 @@ int main(int argc, char **argv)
 {	
 	int i;
 
-	/* ÉÙÓÃ"Person *"; ÓÃ"sp"À´´úÌæ"Person *"
+	/* ï¿½ï¿½ï¿½ï¿½"Person *"; ï¿½ï¿½"sp"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"Person *"
 	 * Person *per; 
-	 * ÓÐ2ÖÖ²Ù×÷: per->XXXx, (*per).XXX
-	 * spÒ²Ó¦¸ÃÓÐÕâ2ÖÐ²Ù×÷:
+	 * ï¿½ï¿½2ï¿½Ö²ï¿½ï¿½ï¿½: per->XXXx, (*per).XXX
+	 * spÒ²Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ð²ï¿½ï¿½ï¿½:
 	 *            sp->XXX, (*sp).XXX
 	 *
 	 */
