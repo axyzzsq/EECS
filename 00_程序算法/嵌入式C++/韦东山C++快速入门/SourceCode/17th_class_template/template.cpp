@@ -17,7 +17,8 @@ public:
 template<typename T> void AAA<T>::test_func(const T &t)
 {
 	this->t = t;
-}
+}
+
 
 template<typename T>
 void AAA<T>::print(void)
