@@ -69,7 +69,9 @@ Linux内核存在多种不同的格式，用于存储和加载内核映像。
    - `mkimage`工具通常包含在Das U-Boot的软件包中。
    - 使用`mkimage`工具，可以将其他格式的内核转换为uImage格式，添加启动信息和头部。
 
-以下是使用U-Boot mkimage工具的示例步骤：
+#### 1、U-Boot mkimage工具
+
+示例步骤：
 
 1. 安装U-Boot软件包：首先，需要安装U-Boot软件包以获取`mkimage`工具。具体的安装方法取决于Linux发行版，可以使用适当的包管理器进行安装。
 
@@ -98,7 +100,7 @@ Linux内核存在多种不同的格式，用于存储和加载内核映像。
 
 
 
-### 2、U-Boot mkimage工具
+#### 2、U-Boot mkimage工具
 
 使用步骤：
 
