@@ -80,3 +80,89 @@ int main()
   使用`void*`类型的指针可以接受任意类型的指针，但需要注意的是，在实际使用中，需要根据需要进行适当的类型转换，以确保在操作指针所指向的数据时不会导致类型错误或未定义行为。
 
   因此，使用`void*`作为参数类型，使得`my_memcpy`函数可以接受不同类型的指针参数，实现通用的内存拷贝功能。
+
+
+
+### 方法2：使用指针递增和类型转换拷贝
+
+```C
+#include <stdio.h>
+
+void my_memcpy(void *dest, const void *src, size_t n) 
+{
+    char *d = (char *)dest;
+    const char *s = (const char *)src;
+    while (n--) 
+    {
+        *d++ = *s++;
+    }
+    /*通俗写法:
+    		while (n > 0) 
+            {
+                *d = *s;
+                d = (char*)d + 1;
+                s = (const char*)s + 1;
+                n--;
+            }    */
+}
+
+int main() 
+{
+    int source[] = {1, 2, 3, 4, 5};
+    int destination[5];
+
+    my_memcpy(destination, source, sizeof(source));
+
+    for (int i = 0; i < sizeof(destination) / sizeof(destination[0]); i++) 
+    {
+        printf("%d ", destination[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+```
+
+![image-20230625201349664](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230625201349664.png)
+
+
+
+### 方法3：使用无符号指针递增和类型转换拷贝
+
+```C
+#include <stdio.h>
+
+void my_memcpy(void *dest, const void *src, size_t n) 
+{
+    unsigned char *d = (unsigned char *)dest;
+    const unsigned char *s = (const unsigned char *)src;
+    while (n--) 
+    {
+        *d++ = *s++;
+    }
+}
+
+int main() 
+{
+    int source[] = {1, 2, 3, 4, 5};
+    int destination[5];
+
+    my_memcpy(destination, source, sizeof(source));
+
+    for (int i = 0; i < sizeof(destination) / sizeof(destination[0]); i++) 
+    {
+        printf("%d ", destination[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+```
+
+选择使用 `unsigned char*` 或 `char*` 的主要区别在于对于有符号类型的处理。C 语言的规范规定，对于有符号类型的指针，如果在指针运算过程中发生溢出或越界，结果是未定义的行为。而对于无符号类型的指针，指针运算不会发生溢出或越界，因为指针的取值范围总是能够容纳所有的有效内存地址。
+
+因此，如果在内存拷贝过程中涉及到有符号类型的数据，如 `signed char`，使用 `unsigned char*` 类型可以保证拷贝的正确性。如果只涉及无符号类型的数据，使用 `char*` 类型也是可以的。
+
+总结起来，这两个实现的主要区别在于指针的类型，对于大多数情况下的内存拷贝来说，它们的功能是相同的。选择使用 `unsigned char*` 或 `char*` 取决于是否涉及有符号类型的数据和个人偏好。
