@@ -1,4 +1,4 @@
-# my memcpy
+# my_memcpy()
 
 - memcpy能拷贝可不止是字符，也可以是整数
 
