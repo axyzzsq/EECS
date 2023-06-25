@@ -170,3 +170,4 @@ char *ptr1 = string1;          // 使用指针指向字符数组
 
 因此，在 `char array[10] = {0};` 这个语句中，发生了一次从整型常量 `0` 到 `char` 类型的隐式类型转换，将整型常量 `0` 转换为 `char` 类型的 `0`，也就是 ASCII 值为 `NUL`（空字符）的字符。
 
+![image-20230625185636594](https://pic-1304959529.cos.ap-guangzhou.myqcloud.com/DB/image-20230625185636594.png)
