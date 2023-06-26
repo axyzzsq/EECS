@@ -1,4 +1,4 @@
-# 冒泡算法(bubble sorting)
+# 冒泡排序(bubble sorting)
 
 ## 算法简介:
 
