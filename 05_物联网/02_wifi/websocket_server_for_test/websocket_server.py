@@ -1,10 +1,11 @@
 import asyncio
 import websockets
 import socket
+import netifaces
 
 async def handle_message(websocket, message):
     print(f"Received message: {message}")
-    await websocket.send(f"Server received: {message}")
+    await websocket.send(f"Server received: {message}")  # 回显客户端发送的消息
 
 async def websocket_server(websocket, path):
     # 获取客户端的IP地址
@@ -18,8 +19,27 @@ async def websocket_server(websocket, path):
     except websockets.exceptions.ConnectionClosedError:
         print(f"Connection closed from {client_ip}")
 
-# 获取主机的IP地址
-host = socket.gethostbyname(socket.gethostname())
+# 获取本机的IP地址
+def get_local_ip():
+    interfaces = netifaces.interfaces()
+    for interface in interfaces:
+        if interface == 'lo':
+            continue
+        addresses = netifaces.ifaddresses(interface)
+        ip_info = addresses.get(netifaces.AF_INET)
+        if ip_info:
+            for info in ip_info:
+                ip = info.get('addr')
+                if ip and not ip.startswith('127.'):
+                    return ip
+    return None
+
+# 获取本机的IP地址
+host = get_local_ip()
+if host is None:
+    print("Failed to get local IP address")
+    exit()
+
 port = 8080
 
 # 启动WebSocket服务器
