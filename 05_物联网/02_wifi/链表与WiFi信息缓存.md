@@ -29,14 +29,16 @@ using namespace std;
 #define MAX_PASSWORD_LENGTH 20
 #define MAX_WIFI_COUNT 9
 
-typedef struct WifiInfo {
+typedef struct WifiInfo 
+{
     char ssid[MAX_SSID_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
     int position;
     struct WifiInfo* next;
 } WifiInfo;
 
-WifiInfo* createWifiInfo(char ssid[], char password[]) {
+WifiInfo* createWifiInfo(char ssid[], char password[]) 
+{
     WifiInfo* wifi = (WifiInfo*)malloc(sizeof(WifiInfo));
     strncpy(wifi->ssid, ssid, MAX_SSID_LENGTH);
     strncpy(wifi->password, password, MAX_PASSWORD_LENGTH);
@@ -45,19 +47,22 @@ WifiInfo* createWifiInfo(char ssid[], char password[]) {
     return wifi;
 }
 
-void insertWifiInfo(WifiInfo** head, char ssid[], char password[]) {
+void insertWifiInfo(WifiInfo** head, char ssid[], char password[]) 
+{
     // Check if ssid already exists in the list
     WifiInfo* current = *head;
     WifiInfo* prev = NULL;
     int position = 0;
 
-    while (current != NULL && strcmp(current->ssid, ssid) != 0) {
+    while (current != NULL && strcmp(current->ssid, ssid) != 0) 
+    {
         prev = current;
         current = current->next;
         position++;
     }
 
-    if (current != NULL) {
+    if (current != NULL) 
+    {
         // Move the existing wifi info to the beginning
         if (prev != NULL)
             prev->next = current->next;
@@ -65,7 +70,8 @@ void insertWifiInfo(WifiInfo** head, char ssid[], char password[]) {
         current->position = 0;
         *head = current;
     }
-    else {
+    else 
+    {
         // Create a new wifi info and insert at the beginning
         WifiInfo* newWifi = createWifiInfo(ssid, password);
         newWifi->position = 0;
@@ -76,18 +82,21 @@ void insertWifiInfo(WifiInfo** head, char ssid[], char password[]) {
     // Update the positions of other wifi infos
     current = *head;
     position = 0;
-    while (current != NULL) {
+    while (current != NULL)
+    {
         current->position = position++;
         current = current->next;
     }
 
     // Check if the list exceeds the maximum count
-    if (position > MAX_WIFI_COUNT) {
+    if (position > MAX_WIFI_COUNT)
+    {
         current = *head;
         prev = NULL;
 
         // Traverse to the last element
-        while (current->next != NULL) {
+        while (current->next != NULL)
+        {
             prev = current;
             current = current->next;
         }
@@ -99,32 +108,38 @@ void insertWifiInfo(WifiInfo** head, char ssid[], char password[]) {
     }
 }
 
-void displayWifiInfo(WifiInfo* head) {
+void displayWifiInfo(WifiInfo* head) 
+{
     WifiInfo* current = head;
 
-    while (current != NULL) {
+    while (current != NULL) 
+    {
         printf("SSID: %s, Password: %s, Position: %d\n", current->ssid, current->password, current->position);
         current = current->next;
     }
 }
 
-void freeWifiInfoList(WifiInfo* head) {
+void freeWifiInfoList(WifiInfo* head)
+{
     WifiInfo* current = head;
     WifiInfo* temp;
 
-    while (current != NULL) {
+    while (current != NULL) 
+    {
         temp = current->next;
         free(current);
         current = temp;
     }
 }
 
-int main() {
+int main()
+{
     WifiInfo* wifiList = NULL;
     char ssid[MAX_SSID_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
 
-    while (1) {
+    while (1) 
+    {
         printf("Enter WiFi SSID (or 'q' to quit): ");
         scanf("%s", ssid);
 
