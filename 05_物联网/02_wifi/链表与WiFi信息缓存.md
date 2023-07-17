@@ -4,7 +4,7 @@
 
 设备端的Flash保存最近曾经连接过的5个路由器的信息(SSID/PSWD)
 
-## implementation
+## Implementation
 
 链表的一个元素(结构体)用来保存一个Wi-Fi的信息，如果是新的Wi-Fi采用头插法,作为第一个元素;
 
